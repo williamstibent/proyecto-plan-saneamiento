@@ -1,0 +1,28 @@
+version: "3.9"
+
+# Docker Compose para desarrollo local.
+# Levanta la base de datos. El backend y el frontend corren directamente
+# en la máquina (sin contenedor) para aprovechar el hot-reload.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sanitia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sanitia_dev
+      POSTGRES_USER: sanitia
+      POSTGRES_PASSWORD: sanitia_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sanitia -d sanitia_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local

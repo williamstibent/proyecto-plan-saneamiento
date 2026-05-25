@@ -1,0 +1,21 @@
+# Configuración específica para desarrollo local
+# Se activa automáticamente con SPRING_PROFILES_ACTIVE=dev
+
+spring:
+  jpa:
+    show-sql: true  # Ver queries en consola durante desarrollo
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:  # Vacío en dev — seguridad abierta en SecurityConfig
+
+# Logs más verbosos en desarrollo
+logging:
+  level:
+    com.sanitia: DEBUG
+    org.springframework.security: DEBUG
+    org.flywaydb: DEBUG
+  pattern:
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %msg%n"

@@ -1,0 +1,12 @@
+# Perfil de tests — Testcontainers inyecta los datasource props dinámicamente
+spring:
+  jpa:
+    show-sql: false
+  flyway:
+    enabled: true
+    clean-disabled: false  # Permite limpiar DB entre tests si se necesita
+
+logging:
+  level:
+    com.sanitia: INFO
+    org.flywaydb: INFO

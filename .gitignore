@@ -1,0 +1,14 @@
+# Variables de entorno — nunca en el repositorio
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Cada subproyecto tiene su propio .gitignore para el resto

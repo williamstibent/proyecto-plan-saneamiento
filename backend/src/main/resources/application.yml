@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: sanitia-backend
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/sanitia_dev}
+    username: ${DATABASE_USERNAME:sanitia}
+    password: ${DATABASE_PASSWORD:sanitia_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Flyway gestiona el esquema — nunca usar create/update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: public
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # En dev local se deshabilita en SecurityConfig.
+          # En staging/prod: issuer-uri apunta a Cognito.
+          issuer-uri: ${COGNITO_ISSUER_URI:}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Configuración propia de SanitIA
+sanitia:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  aws:
+    region: ${AWS_REGION:us-east-1}
+    s3:
+      evidence-bucket: ${S3_EVIDENCE_BUCKET:sanitia-evidence-dev}
+      presigned-url-expiration-minutes: 15
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
