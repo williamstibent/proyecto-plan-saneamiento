@@ -1,0 +1,1599 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SanitIA · Opción 1 — Light Clínico</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f172a;       /* slate-900 */
+    --muted:#475569;     /* slate-600 */
+    --line:#e2e8f0;      /* slate-200 */
+    --bg:#f8fafc;        /* slate-50 */
+    --brand:#1e40af;     /* blue-800 — discreto */
+    --brand-50:#eff6ff;
+    --ok:#059669;        /* emerald-600 */
+    --warn:#d97706;      /* amber-600 */
+    --bad:#dc2626;       /* red-600 */
+  }
+  html,body{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:#fff;}
+  .grain{
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(30,64,175,.06), transparent 60%),
+      radial-gradient(800px 400px at -10% 110%, rgba(5,150,105,.05), transparent 60%);
+  }
+  .device-laptop{
+    background:linear-gradient(180deg,#f1f5f9, #fff);
+    border-radius:18px;
+    padding:14px 14px 0 14px;
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px -25px rgba(15,23,42,.18), 0 8px 20px -10px rgba(15,23,42,.10);
+  }
+  .device-laptop .screen{
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+    border:1px solid #e2e8f0;
+  }
+  .device-laptop .base{
+    height:14px;
+    background:linear-gradient(180deg,#e2e8f0,#cbd5e1);
+    border-radius:0 0 24px 24px;
+    margin:0 -30px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+  }
+  .device-phone{
+    width:360px;
+    border-radius:42px;
+    background:#0f172a;
+    padding:10px;
+    box-shadow:0 30px 60px -20px rgba(15,23,42,.35), 0 10px 30px -10px rgba(15,23,42,.2);
+  }
+  .device-phone .screen{
+    border-radius:32px;
+    overflow:hidden;
+    background:#fff;
+    height:740px;
+    position:relative;
+  }
+  .notch{
+    position:absolute; top:8px; left:50%; transform:translateX(-50%);
+    width:110px; height:24px; background:#0f172a; border-radius:14px; z-index:30;
+  }
+  .scrollbar-clean::-webkit-scrollbar{width:6px;}
+  .scrollbar-clean::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px;}
+  .tag{font-feature-settings:'cv11','ss01';}
+  .dotted-bg{
+    background-image:radial-gradient(rgba(15,23,42,.06) 1px, transparent 1px);
+    background-size:14px 14px;
+  }
+  .ring-soft{box-shadow:0 0 0 4px rgba(30,64,175,.08);}
+  .kbd{font-family:ui-monospace,monospace;font-size:11px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;padding:2px 6px;color:#475569;}
+  .stepper-dot{width:10px;height:10px;border-radius:9999px;background:#cbd5e1;}
+  .stepper-dot.done{background:#0f172a;}
+  .stepper-dot.active{background:#1e40af;box-shadow:0 0 0 4px rgba(30,64,175,.12);}
+  .progress-track{height:6px;background:#e2e8f0;border-radius:9999px;overflow:hidden;}
+  .progress-fill{height:100%;background:#0f172a;border-radius:9999px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:9999px;font-size:11px;font-weight:600;}
+  .chip-ok{background:#ecfdf5;color:#065f46;}
+  .chip-warn{background:#fffbeb;color:#92400e;}
+  .chip-bad{background:#fef2f2;color:#991b1b;}
+  .chip-info{background:#eff6ff;color:#1e3a8a;}
+  .chip-muted{background:#f1f5f9;color:#475569;}
+  .map-poly{transition:opacity .15s ease;}
+  .map-poly:hover{opacity:.85;cursor:pointer;}
+  .nav-pill{transition:all .15s ease;}
+  .nav-pill:hover{background:#f1f5f9;}
+  .nav-pill.active{background:#0f172a;color:#fff;}
+</style>
+</head>
+<body class="bg-white">
+
+<!-- ====================== TOP NAV ====================== -->
+<header class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-slate-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-slate-900 text-white grid place-items-center font-bold">S</div>
+      <div>
+        <div class="text-sm font-semibold leading-none">SanitIA · Design System</div>
+        <div class="text-xs text-slate-500">Opción 1 · Light Clínico</div>
+      </div>
+    </div>
+    <nav class="hidden md:flex items-center gap-1 text-sm">
+      <a href="#login" class="nav-pill px-3 py-1.5 rounded-lg text-slate-600">Login</a>
+      <a href="#dashboard" class="nav-pill px-3 py-1.5 rounded-lg text-slate-600">Dashboard</a>
+      <a href="#wizard" class="nav-pill px-3 py-1.5 rounded-lg text-slate-600">Constructor POE</a>
+      <a href="#map" class="nav-pill px-3 py-1.5 rounded-lg text-slate-600">Mapa</a>
+      <a href="#mobile" class="nav-pill px-3 py-1.5 rounded-lg text-slate-600">Móvil Operario</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="../index.html" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">← Ver las 3 opciones</a>
+    </div>
+  </div>
+</header>
+
+<!-- ====================== HERO ====================== -->
+<section class="grain border-b border-slate-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="chip chip-muted">Opción 1</span>
+      <span class="text-xs text-slate-500">Inspirado en Linear · Apple HIG · Stripe</span>
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">Light Clínico — claridad quirúrgica, jerarquía perfecta.</h1>
+    <p class="mt-4 text-slate-600 max-w-2xl text-lg">Paleta blanco / slate, tipografía Inter, mucho whitespace y micro-interacciones discretas. Pensado para ser el "Linear de cumplimiento sanitario": rápido, denso cuando hace falta, silencioso cuando no.</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10 max-w-3xl">
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="text-xs text-slate-500 uppercase tracking-wider">Background</div>
+        <div class="mt-2 flex items-center gap-2">
+          <div class="w-8 h-8 rounded-md bg-white border border-slate-200"></div>
+          <div class="w-8 h-8 rounded-md bg-slate-50 border border-slate-200"></div>
+          <div class="w-8 h-8 rounded-md bg-slate-100 border border-slate-200"></div>
+        </div>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="text-xs text-slate-500 uppercase tracking-wider">Texto</div>
+        <div class="mt-2 flex items-center gap-2">
+          <div class="w-8 h-8 rounded-md bg-slate-900"></div>
+          <div class="w-8 h-8 rounded-md bg-slate-600"></div>
+          <div class="w-8 h-8 rounded-md bg-slate-400"></div>
+        </div>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="text-xs text-slate-500 uppercase tracking-wider">Acento</div>
+        <div class="mt-2 flex items-center gap-2">
+          <div class="w-8 h-8 rounded-md bg-blue-800"></div>
+          <div class="w-8 h-8 rounded-md bg-blue-100 border border-blue-200"></div>
+        </div>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="text-xs text-slate-500 uppercase tracking-wider">Estados</div>
+        <div class="mt-2 flex items-center gap-2">
+          <div class="w-8 h-8 rounded-md bg-emerald-500"></div>
+          <div class="w-8 h-8 rounded-md bg-amber-500"></div>
+          <div class="w-8 h-8 rounded-md bg-red-500"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== LOGIN ====================== -->
+<section id="login" class="border-b border-slate-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider">01 — Autenticación</div>
+        <h2 class="text-2xl font-bold mt-1">Login</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-xl">Acceso por Cognito. Detecta automáticamente el dispositivo y sugiere "modo operario" en móviles.</p>
+      </div>
+    </div>
+
+    <div class="device-laptop max-w-[1180px] mx-auto">
+      <div class="screen">
+        <div class="grid grid-cols-12 min-h-[640px]">
+          <!-- Lado decorativo -->
+          <div class="col-span-7 dotted-bg bg-slate-50 relative p-12">
+            <div class="absolute top-6 left-6 flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-slate-900 text-white grid place-items-center font-bold text-sm">S</div>
+              <div class="font-semibold">SanitIA</div>
+            </div>
+            <div class="absolute bottom-12 left-12 right-12">
+              <div class="text-xs text-slate-500 uppercase tracking-widest mb-3">Cumplimiento sanitario operativo</div>
+              <h3 class="text-3xl font-bold leading-tight">Tu plan de saneamiento, vivo cada día.</h3>
+              <p class="text-slate-600 mt-3 max-w-md">Convierte la Resolución 2674 en tareas diarias con evidencia, trazabilidad y listo para INVIMA.</p>
+
+              <div class="mt-8 grid grid-cols-3 gap-3 max-w-lg">
+                <div class="rounded-xl bg-white border border-slate-200 p-3">
+                  <div class="text-2xl font-bold tracking-tight">2.674</div>
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wider">Resolución</div>
+                </div>
+                <div class="rounded-xl bg-white border border-slate-200 p-3">
+                  <div class="text-2xl font-bold tracking-tight">4+8</div>
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wider">Programas POE</div>
+                </div>
+                <div class="rounded-xl bg-white border border-slate-200 p-3">
+                  <div class="text-2xl font-bold tracking-tight">100%</div>
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wider">Trazable</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <div class="col-span-5 p-12 flex flex-col justify-center">
+            <div class="max-w-sm w-full mx-auto">
+              <h3 class="text-2xl font-bold">Iniciar sesión</h3>
+              <p class="text-sm text-slate-600 mt-1">Bienvenido de vuelta. Ingresa tus credenciales.</p>
+
+              <div class="mt-8 space-y-4">
+                <div>
+                  <label class="text-xs font-medium text-slate-600">Correo electrónico</label>
+                  <div class="mt-1.5 flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2.5 bg-white focus-within:ring-soft focus-within:border-blue-700">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-400"><path stroke-width="2" d="M3 7l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <input type="email" value="admin@artesapan.co" class="bg-transparent w-full text-sm outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="text-xs font-medium text-slate-600">Contraseña</label>
+                    <a class="text-xs text-blue-800 hover:underline" href="#">¿Olvidaste?</a>
+                  </div>
+                  <div class="mt-1.5 flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2.5 bg-white">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-400"><path stroke-width="2" d="M12 11v3m0 4h.01M6 21h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2zM16 10V7a4 4 0 10-8 0v3"/></svg>
+                    <input type="password" value="•••••••••••" class="bg-transparent w-full text-sm outline-none" />
+                  </div>
+                </div>
+
+                <label class="flex items-center gap-2 text-xs text-slate-600">
+                  <input type="checkbox" checked class="rounded border-slate-300" />
+                  Recordar este dispositivo durante 30 días
+                </label>
+
+                <button class="w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                  Entrar
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+
+                <div class="relative my-2">
+                  <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                  <div class="relative flex justify-center"><span class="bg-white px-2 text-[11px] text-slate-500 uppercase tracking-widest">o continuar con</span></div>
+                </div>
+
+                <button class="w-full border border-slate-200 hover:bg-slate-50 py-2.5 rounded-lg font-medium text-sm flex items-center justify-center gap-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#1e40af" d="M12 11.5V14h6.3c-.3 1.7-1.9 5-6.3 5-3.8 0-6.9-3.1-6.9-7s3.1-7 6.9-7c2.2 0 3.6.9 4.4 1.7l3-2.9C17.6 1.9 15 1 12 1 5.9 1 1 5.9 1 12s4.9 11 11 11c6.4 0 10.6-4.5 10.6-10.8 0-.7-.1-1.2-.2-1.7H12z"/></svg>
+                  Single Sign-On corporativo
+                </button>
+
+                <div class="text-xs text-slate-500 text-center mt-4">
+                  ¿No tienes cuenta? Pide acceso a tu administrador. <span class="kbd">enter</span> para iniciar
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="base"></div>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-3 gap-3 max-w-[1180px] mx-auto text-sm">
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="font-semibold">Validación en tiempo real</div>
+        <div class="text-slate-600 text-xs mt-1">Errores inline, sin overlays. WCAG AA en contraste.</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="font-semibold">SSO + MFA opcional</div>
+        <div class="text-slate-600 text-xs mt-1">Cognito como Identity Provider. Token con tenantId, userId, roles.</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="font-semibold">Detección de dispositivo</div>
+        <div class="text-slate-600 text-xs mt-1">Si abre desde móvil, redirige a vista operario.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== DASHBOARD ====================== -->
+<section id="dashboard" class="border-b border-slate-200 bg-slate-50">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider">02 — Web Desktop</div>
+        <h2 class="text-2xl font-bold mt-1">Dashboard admin-cliente</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-xl">Visión del día en 5 segundos. KPIs, bandeja de validación, alertas críticas y acceso rápido a las áreas con incidencias.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-xs text-slate-500">
+        <span class="chip chip-muted">1440 × 900</span>
+        <span class="chip chip-muted">Sidebar fija 72/240</span>
+      </div>
+    </div>
+
+    <div class="device-laptop max-w-[1280px] mx-auto">
+      <div class="screen">
+        <div class="grid grid-cols-12 min-h-[760px]">
+
+          <!-- SIDEBAR -->
+          <aside class="col-span-2 bg-slate-50 border-r border-slate-200 p-4 flex flex-col">
+            <div class="flex items-center gap-2 px-2 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-slate-900 text-white grid place-items-center font-bold text-sm">S</div>
+              <div>
+                <div class="text-sm font-semibold leading-none">SanitIA</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">ArtesaPan · Sede Centro</div>
+              </div>
+            </div>
+
+            <div class="text-[10px] uppercase tracking-widest text-slate-400 px-2 mb-2">Operativo</div>
+            <nav class="space-y-0.5 text-sm">
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-slate-900 text-white font-medium">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+                Resumen del día
+              </a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                Bandeja de validación
+                <span class="ml-auto chip chip-bad">12</span>
+              </a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M9 17v-2a4 4 0 014-4h4M5 8a3 3 0 100-6 3 3 0 000 6zm16 0a3 3 0 100-6 3 3 0 000 6zM5 16a3 3 0 100 6 3 3 0 000-6z"/></svg>
+                Mapa del establecimiento
+              </a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M8 7V3m8 4V3M3 11h18M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Programación
+              </a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 8v4l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                No conformidades
+                <span class="ml-auto chip chip-warn">3</span>
+              </a>
+            </nav>
+
+            <div class="text-[10px] uppercase tracking-widest text-slate-400 px-2 mt-6 mb-2">Configuración</div>
+            <nav class="space-y-0.5 text-sm">
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">📑 Procedimientos POE</a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">🧪 Productos químicos</a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">👥 Usuarios y áreas</a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">📚 Capacitaciones</a>
+              <a class="flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-700 hover:bg-white">🔒 Vista INVIMA</a>
+            </nav>
+
+            <div class="mt-auto rounded-xl border border-slate-200 bg-white p-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 grid place-items-center font-semibold text-xs">CM</div>
+                <div class="leading-tight">
+                  <div class="text-xs font-semibold">Catalina Mejía</div>
+                  <div class="text-[10px] text-slate-500">Admin · ArtesaPan</div>
+                </div>
+              </div>
+              <div class="mt-2 flex items-center justify-between text-[10px] text-slate-500">
+                <span>👷 Operario</span>
+                <div class="w-9 h-5 bg-slate-900 rounded-full relative">
+                  <div class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></div>
+                </div>
+                <span class="font-semibold text-slate-900">⚙️ Admin</span>
+              </div>
+            </div>
+          </aside>
+
+          <!-- MAIN -->
+          <main class="col-span-7 p-6 overflow-auto scrollbar-clean">
+            <!-- Top bar -->
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-[11px] uppercase tracking-widest text-slate-500">Resumen · 20 de mayo de 2026</div>
+                <h3 class="text-2xl font-bold mt-1">Buen día, Catalina.</h3>
+                <p class="text-sm text-slate-600">Hoy hay <b class="text-slate-900">28 tareas programadas</b> en 6 áreas. <b class="text-amber-700">3 próximas a vencer</b>.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 text-sm w-72 bg-white">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-400"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="M21 21l-4-4"/></svg>
+                  <input class="bg-transparent outline-none w-full" placeholder="Buscar áreas, procedimientos…" />
+                  <span class="kbd">⌘K</span>
+                </div>
+                <button class="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white hover:bg-slate-50">📤 Exportar</button>
+                <button class="bg-slate-900 text-white rounded-lg px-3 py-2 text-sm flex items-center gap-2">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 5v14M5 12h14"/></svg>
+                  Nueva tarea
+                </button>
+              </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="grid grid-cols-4 gap-3 mb-6">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="text-[11px] uppercase tracking-wider text-slate-500">Cumplimiento del día</div>
+                <div class="mt-2 flex items-end gap-2">
+                  <div class="text-3xl font-bold">86%</div>
+                  <div class="chip chip-ok mb-1">▲ 4%</div>
+                </div>
+                <div class="progress-track mt-3"><div class="progress-fill" style="width:86%; background:#059669;"></div></div>
+                <div class="text-[11px] text-slate-500 mt-1.5">24 de 28 tareas al día</div>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="text-[11px] uppercase tracking-wider text-slate-500">Pendientes de validar</div>
+                <div class="mt-2 flex items-end gap-2">
+                  <div class="text-3xl font-bold">12</div>
+                  <div class="chip chip-warn mb-1">2 antiguas</div>
+                </div>
+                <div class="text-[11px] text-slate-500 mt-3">Más antigua: hace 1d 4h · Cocina</div>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="text-[11px] uppercase tracking-wider text-slate-500">Vencidas</div>
+                <div class="mt-2 flex items-end gap-2">
+                  <div class="text-3xl font-bold text-red-600">2</div>
+                  <div class="chip chip-bad mb-1">acción urgente</div>
+                </div>
+                <div class="text-[11px] text-slate-500 mt-3">Área Horno · Baños</div>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="text-[11px] uppercase tracking-wider text-slate-500">No conformidades</div>
+                <div class="mt-2 flex items-end gap-2">
+                  <div class="text-3xl font-bold">3</div>
+                  <div class="chip chip-info mb-1">en seguimiento</div>
+                </div>
+                <div class="text-[11px] text-slate-500 mt-3">1 alta · 2 media</div>
+              </div>
+            </div>
+
+            <!-- Cumplimiento por programa -->
+            <div class="grid grid-cols-3 gap-3 mb-6">
+              <div class="col-span-2 rounded-xl border border-slate-200 bg-white p-5">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-semibold">Cumplimiento por programa</h4>
+                    <p class="text-xs text-slate-500">Últimos 30 días · Resolución 2674 / 2013</p>
+                  </div>
+                  <div class="flex gap-1">
+                    <button class="px-2 py-1 text-[11px] rounded-md bg-slate-900 text-white">Mes</button>
+                    <button class="px-2 py-1 text-[11px] rounded-md text-slate-600 hover:bg-slate-100">Semana</button>
+                    <button class="px-2 py-1 text-[11px] rounded-md text-slate-600 hover:bg-slate-100">Día</button>
+                  </div>
+                </div>
+
+                <!-- Mini bar chart inline SVG -->
+                <div class="mt-5 grid grid-cols-4 gap-4">
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-medium">Limpieza y Desinfección</span>
+                      <span class="font-semibold">92%</span>
+                    </div>
+                    <div class="progress-track mt-2"><div class="progress-fill" style="width:92%;background:#059669;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-medium">Agua potable</span>
+                      <span class="font-semibold">88%</span>
+                    </div>
+                    <div class="progress-track mt-2"><div class="progress-fill" style="width:88%;background:#059669;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-medium">Residuos sólidos</span>
+                      <span class="font-semibold text-amber-700">74%</span>
+                    </div>
+                    <div class="progress-track mt-2"><div class="progress-fill" style="width:74%;background:#d97706;"></div></div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-medium">Control de plagas</span>
+                      <span class="font-semibold">81%</span>
+                    </div>
+                    <div class="progress-track mt-2"><div class="progress-fill" style="width:81%;background:#059669;"></div></div>
+                  </div>
+                </div>
+
+                <!-- Line chart -->
+                <svg class="w-full mt-6" viewBox="0 0 600 140" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#0f172a" stop-opacity=".15"/>
+                      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <g stroke="#e2e8f0" stroke-width="1">
+                    <line x1="0" y1="20" x2="600" y2="20"/>
+                    <line x1="0" y1="60" x2="600" y2="60"/>
+                    <line x1="0" y1="100" x2="600" y2="100"/>
+                  </g>
+                  <path d="M0,90 C60,70 120,60 180,50 C240,40 300,55 360,40 C420,28 480,32 540,20 L600,18 L600,140 L0,140 Z" fill="url(#g1)"/>
+                  <path d="M0,90 C60,70 120,60 180,50 C240,40 300,55 360,40 C420,28 480,32 540,20 L600,18" fill="none" stroke="#0f172a" stroke-width="2"/>
+                  <g fill="#0f172a">
+                    <circle cx="180" cy="50" r="3"/><circle cx="360" cy="40" r="3"/><circle cx="540" cy="20" r="3"/>
+                  </g>
+                </svg>
+                <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+                  <span>Abr 21</span><span>Abr 28</span><span>May 5</span><span>May 12</span><span>May 19</span>
+                </div>
+              </div>
+
+              <!-- Bandeja de validación -->
+              <div class="rounded-xl border border-slate-200 bg-white p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div>
+                    <h4 class="font-semibold">Bandeja de validación</h4>
+                    <p class="text-xs text-slate-500">12 pendientes</p>
+                  </div>
+                  <a href="#" class="text-xs text-blue-800 hover:underline">Ver todas →</a>
+                </div>
+                <ul class="space-y-3 text-sm">
+                  <li class="flex items-start gap-3 py-2 border-b border-slate-100">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 grid place-items-center text-xs font-semibold">JR</div>
+                    <div class="flex-1">
+                      <div class="font-medium leading-tight">Limpieza mesas — Cocina</div>
+                      <div class="text-[11px] text-slate-500">Juan Restrepo · 08:42 · 3 fotos</div>
+                    </div>
+                    <span class="chip chip-warn">esperando</span>
+                  </li>
+                  <li class="flex items-start gap-3 py-2 border-b border-slate-100">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 grid place-items-center text-xs font-semibold">LO</div>
+                    <div class="flex-1">
+                      <div class="font-medium leading-tight">Sanitización pisos — Horno</div>
+                      <div class="text-[11px] text-slate-500">Laura Ortiz · 09:10 · 2 fotos</div>
+                    </div>
+                    <span class="chip chip-warn">esperando</span>
+                  </li>
+                  <li class="flex items-start gap-3 py-2 border-b border-slate-100">
+                    <div class="w-9 h-9 rounded-lg bg-red-50 text-red-700 grid place-items-center text-xs font-semibold">MR</div>
+                    <div class="flex-1">
+                      <div class="font-medium leading-tight">Batidora — Equipo desmontable</div>
+                      <div class="text-[11px] text-slate-500">Mateo Rojas · ayer · sin foto</div>
+                    </div>
+                    <span class="chip chip-bad">incompleta</span>
+                  </li>
+                  <li class="flex items-start gap-3 py-2">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 grid place-items-center text-xs font-semibold">SC</div>
+                    <div class="flex-1">
+                      <div class="font-medium leading-tight">Refrigerador — Cuarto frío</div>
+                      <div class="text-[11px] text-slate-500">Sara Cano · 09:25 · 4 fotos</div>
+                    </div>
+                    <span class="chip chip-warn">esperando</span>
+                  </li>
+                </ul>
+                <button class="mt-4 w-full bg-slate-900 text-white rounded-lg py-2 text-sm font-medium">Revisar ahora</button>
+              </div>
+            </div>
+
+            <!-- Tabla de tareas -->
+            <div class="rounded-xl border border-slate-200 bg-white">
+              <div class="p-5 flex items-center justify-between border-b border-slate-200">
+                <div>
+                  <h4 class="font-semibold">Tareas del día</h4>
+                  <p class="text-xs text-slate-500">Filtradas por: <b class="text-slate-900">todas las áreas</b> · todos los estados</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <button class="chip chip-muted">📍 Área</button>
+                  <button class="chip chip-muted">📅 Frecuencia</button>
+                  <button class="chip chip-muted">👤 Responsable</button>
+                </div>
+              </div>
+              <table class="w-full text-sm">
+                <thead class="text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                  <tr>
+                    <th class="text-left font-medium px-5 py-2.5">Tarea</th>
+                    <th class="text-left font-medium px-5 py-2.5">Área</th>
+                    <th class="text-left font-medium px-5 py-2.5">Responsable</th>
+                    <th class="text-left font-medium px-5 py-2.5">Vence</th>
+                    <th class="text-left font-medium px-5 py-2.5">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3">
+                      <div class="font-medium">Limpiar mesas de trabajo</div>
+                      <div class="text-[11px] text-slate-500">POE-LYD-02 · 6 pasos</div>
+                    </td>
+                    <td class="px-5 py-3">Cocina</td>
+                    <td class="px-5 py-3">Juan R.</td>
+                    <td class="px-5 py-3 text-red-600 font-medium">Hace 12 min</td>
+                    <td class="px-5 py-3"><span class="chip chip-bad">vencida</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3">
+                      <div class="font-medium">Desinfectar utensilios</div>
+                      <div class="text-[11px] text-slate-500">POE-LYD-03 · 8 pasos · ⚠ choque</div>
+                    </td>
+                    <td class="px-5 py-3">Cocina</td>
+                    <td class="px-5 py-3">Laura O.</td>
+                    <td class="px-5 py-3 text-amber-700 font-medium">09:30</td>
+                    <td class="px-5 py-3"><span class="chip chip-warn">próxima</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3">
+                      <div class="font-medium">Refrigerador 02 — interior</div>
+                      <div class="text-[11px] text-slate-500">POE-FRIO-05 · semanal</div>
+                    </td>
+                    <td class="px-5 py-3">Cuarto frío</td>
+                    <td class="px-5 py-3">Sara C.</td>
+                    <td class="px-5 py-3">11:00</td>
+                    <td class="px-5 py-3"><span class="chip chip-info">pendiente</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3">
+                      <div class="font-medium">Sanitización pisos</div>
+                      <div class="text-[11px] text-slate-500">POE-PISOS-14 · diaria</div>
+                    </td>
+                    <td class="px-5 py-3">Horno</td>
+                    <td class="px-5 py-3">Laura O.</td>
+                    <td class="px-5 py-3">08:00</td>
+                    <td class="px-5 py-3"><span class="chip chip-ok">completada</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="px-5 py-3">
+                      <div class="font-medium">Control de cloro — agua potable</div>
+                      <div class="text-[11px] text-slate-500">PROG-AGUA · diaria · 2 ppm</div>
+                    </td>
+                    <td class="px-5 py-3">Tanque</td>
+                    <td class="px-5 py-3">Catalina M.</td>
+                    <td class="px-5 py-3">07:30</td>
+                    <td class="px-5 py-3"><span class="chip chip-ok">completada</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </main>
+
+          <!-- ASIDE / NOTIFICATIONS -->
+          <aside class="col-span-3 border-l border-slate-200 p-5 bg-white overflow-auto scrollbar-clean">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-semibold text-sm">Actividad reciente</h4>
+              <button class="text-xs text-slate-500 hover:text-slate-900">Marcar todo</button>
+            </div>
+
+            <div class="rounded-xl border border-red-200 bg-red-50 p-3 mb-4">
+              <div class="flex items-start gap-2">
+                <div class="w-7 h-7 rounded-full bg-red-100 text-red-700 grid place-items-center text-xs font-bold">!</div>
+                <div class="text-sm">
+                  <div class="font-semibold text-red-900">No conformidad alta</div>
+                  <div class="text-[11px] text-red-800">Plagas detectadas en almacén · ayer 19:42 ·
+                    <a class="underline" href="#">abrir acción correctiva</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ol class="relative border-l border-slate-200 ml-2 space-y-5 text-sm">
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">09:25</div>
+                <div><b>Sara Cano</b> completó <span class="text-slate-900">Refrigerador — Cuarto frío</span></div>
+              </li>
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-amber-500 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">09:10</div>
+                <div><b>Laura Ortiz</b> envió a validar <span class="text-slate-900">Sanitización pisos · Horno</span></div>
+              </li>
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-blue-700 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">08:42</div>
+                <div><b>Juan Restrepo</b> capturó 3 fotos en <span class="text-slate-900">Cocina · mesas</span></div>
+              </li>
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-slate-400 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">07:30</div>
+                <div><b>Sistema</b> generó 28 tareas del día · scheduler</div>
+              </li>
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-red-500 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">ayer 19:42</div>
+                <div><b>Catalina</b> abrió no conformidad <span class="text-slate-900">Plagas en almacén</span></div>
+              </li>
+              <li class="ml-4">
+                <div class="absolute -left-1.5 w-3 h-3 rounded-full bg-blue-700 ring-2 ring-white"></div>
+                <div class="text-[11px] text-slate-500">ayer 17:08</div>
+                <div><b>Consultor externo</b> publicó <span class="text-slate-900">POE-FRIO-05 v3</span></div>
+              </li>
+            </ol>
+
+            <div class="mt-6 rounded-xl border border-slate-200 p-4">
+              <div class="text-xs font-semibold">Próxima visita INVIMA</div>
+              <div class="text-[11px] text-slate-500 mt-1">Estimada en 21 días</div>
+              <div class="progress-track mt-2"><div class="progress-fill" style="width:68%;background:#1e40af;"></div></div>
+              <div class="text-[11px] text-slate-500 mt-1.5">68% del paquete de evidencias listo</div>
+              <button class="mt-3 w-full border border-slate-900 text-slate-900 rounded-lg py-2 text-xs font-semibold hover:bg-slate-50">Preparar visita →</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="base"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== WIZARD POE ====================== -->
+<section id="wizard" class="border-b border-slate-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider">03 — Web Desktop</div>
+        <h2 class="text-2xl font-bold mt-1">Constructor de POE — Wizard</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-xl">3 paneles: pasos + editor + preview en vivo del operario. Captura fielmente la anatomía real de un POE (EPP, productos, dosificación, fases, dosis de choque).</p>
+      </div>
+    </div>
+
+    <div class="device-laptop max-w-[1280px] mx-auto">
+      <div class="screen">
+        <div class="grid grid-cols-12 min-h-[780px]">
+
+          <!-- Pasos -->
+          <aside class="col-span-2 bg-slate-50 border-r border-slate-200 p-5">
+            <a href="#" class="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 mb-6">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M15 18l-6-6 6-6"/></svg>
+              Volver a procedimientos
+            </a>
+            <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3">Construyendo</div>
+            <div class="font-semibold text-sm leading-tight">POE-LYD 02</div>
+            <div class="text-[11px] text-slate-500 mb-6">Limpiar mesas de trabajo</div>
+
+            <ol class="space-y-4 text-sm">
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot done mt-1.5"></div>
+                <div>
+                  <div class="font-medium">Información básica</div>
+                  <div class="text-[11px] text-emerald-700">✓ Completo</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot done mt-1.5"></div>
+                <div>
+                  <div class="font-medium">EPP e implementos</div>
+                  <div class="text-[11px] text-emerald-700">✓ 4 ítems</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot active mt-1.5"></div>
+                <div>
+                  <div class="font-semibold text-blue-900">Productos y dosis</div>
+                  <div class="text-[11px] text-blue-800">En edición · 2 productos</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot mt-1.5"></div>
+                <div>
+                  <div class="font-medium text-slate-500">Pasos del procedimiento</div>
+                  <div class="text-[11px] text-slate-400">Limpieza · Desinfección</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot mt-1.5"></div>
+                <div>
+                  <div class="font-medium text-slate-500">Frecuencia y dosis de choque</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="stepper-dot mt-1.5"></div>
+                <div>
+                  <div class="font-medium text-slate-500">Preview y publicar</div>
+                </div>
+              </li>
+            </ol>
+
+            <div class="mt-8 rounded-xl border border-slate-200 bg-white p-3 text-[11px] text-slate-500">
+              💡 Puedes <b class="text-slate-900">clonar este POE</b> a otros establecimientos del mismo tenant tras publicarlo.
+            </div>
+          </aside>
+
+          <!-- Editor -->
+          <main class="col-span-6 p-7 overflow-auto scrollbar-clean">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-[11px] uppercase tracking-widest text-slate-500">Paso 3 de 6</div>
+                <h3 class="text-xl font-bold mt-1">Productos químicos y dosificaciones</h3>
+                <p class="text-sm text-slate-600 mt-1">Define la dosificación específica para cada superficie de este procedimiento.</p>
+              </div>
+              <span class="chip chip-info">borrador · auto-guardado</span>
+            </div>
+
+            <!-- Producto card 1 -->
+            <div class="mt-6 rounded-xl border border-slate-200 p-5">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 grid place-items-center">🧪</div>
+                  <div>
+                    <div class="font-semibold">Detergente industrial</div>
+                    <div class="text-[11px] text-slate-500">Marca: Belt · INVIMA NSO-12345</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button class="text-xs text-slate-500 hover:text-slate-900">Ver MSDS</button>
+                  <button class="w-8 h-8 rounded-md hover:bg-slate-100 grid place-items-center">⋯</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-4 gap-3 mt-5">
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Superficie</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">Mesas de trabajo ▾</div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Dilución</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">30–50 <span class="text-slate-400">ml/L</span></div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Tiempo contacto</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">— <span class="text-slate-400">min</span></div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Método</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">Esponja / cepillo ▾</div>
+                </div>
+              </div>
+              <label class="mt-4 inline-flex items-center gap-2 text-sm">
+                <input type="checkbox" checked class="rounded border-slate-300" />
+                Requiere enjuague con agua potable
+              </label>
+            </div>
+
+            <!-- Producto card 2 -->
+            <div class="mt-4 rounded-xl border border-slate-200 p-5">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 grid place-items-center">🧪</div>
+                  <div>
+                    <div class="font-semibold">Amonio cuaternario 5ª gen.</div>
+                    <div class="text-[11px] text-slate-500">Marca: Quanto · INVIMA NSO-98712</div>
+                  </div>
+                </div>
+                <span class="chip chip-info">desinfectante</span>
+              </div>
+
+              <div class="grid grid-cols-4 gap-3 mt-5">
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Superficie</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">Mesas de trabajo ▾</div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Dilución</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">5 <span class="text-slate-400">ml/L</span></div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Tiempo contacto</label>
+                  <div class="mt-1 border border-blue-300 rounded-lg px-3 py-2 text-sm bg-blue-50 text-blue-900 font-medium">10 min ⏱</div>
+                </div>
+                <div>
+                  <label class="text-[11px] uppercase tracking-wider text-slate-500">Método</label>
+                  <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white">Atomizador ▾</div>
+                </div>
+              </div>
+
+              <div class="mt-4 flex items-center justify-between text-sm">
+                <label class="inline-flex items-center gap-2">
+                  <input type="checkbox" checked class="rounded border-slate-300" />
+                  Requiere enjuague
+                </label>
+                <div class="text-[11px] text-slate-500">⚠ Vinculará temporizador al paso "Dejar actuar"</div>
+              </div>
+            </div>
+
+            <!-- Add product / dosis choque -->
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <button class="rounded-xl border-dashed border-2 border-slate-300 hover:border-slate-900 hover:bg-slate-50 py-4 text-sm font-medium text-slate-700 flex items-center justify-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 5v14M5 12h14"/></svg>
+                Agregar otro producto
+              </button>
+              <button class="rounded-xl border-2 border-amber-200 bg-amber-50 hover:bg-amber-100 py-4 text-sm font-semibold text-amber-900 flex items-center justify-center gap-2">
+                ⚡ Configurar dosis de choque
+              </button>
+            </div>
+
+            <div class="mt-7 flex items-center justify-between">
+              <button class="border border-slate-200 hover:bg-slate-50 rounded-lg px-4 py-2 text-sm font-medium">← Anterior</button>
+              <div class="text-xs text-slate-500">3 / 6</div>
+              <button class="bg-slate-900 text-white rounded-lg px-5 py-2 text-sm font-semibold">Continuar a Pasos →</button>
+            </div>
+          </main>
+
+          <!-- Preview operario -->
+          <aside class="col-span-4 border-l border-slate-200 p-6 bg-slate-50 overflow-auto scrollbar-clean">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-semibold text-sm flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+                Vista del operario
+              </h4>
+              <span class="chip chip-muted">live preview</span>
+            </div>
+
+            <!-- Mini phone frame -->
+            <div class="bg-slate-900 rounded-[28px] p-2 max-w-[260px] mx-auto">
+              <div class="bg-white rounded-[22px] p-4 text-[11px] leading-tight">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[10px] text-slate-500">POE-LYD 02</span>
+                  <span class="chip chip-warn text-[9px]">vence 09:30</span>
+                </div>
+                <div class="font-bold text-[13px]">Limpiar mesas de trabajo</div>
+                <div class="text-[10px] text-slate-500">Cocina · diaria</div>
+
+                <div class="mt-3 text-[10px] uppercase tracking-widest text-slate-400">🥽 Antes de empezar</div>
+                <div class="mt-1 flex flex-wrap gap-1">
+                  <span class="chip chip-muted text-[9px]">monogafas</span>
+                  <span class="chip chip-muted text-[9px]">guantes</span>
+                  <span class="chip chip-muted text-[9px]">tapabocas</span>
+                  <span class="chip chip-muted text-[9px]">delantal</span>
+                </div>
+
+                <div class="mt-3 text-[10px] uppercase tracking-widest text-slate-400">Preparar soluciones</div>
+                <div class="mt-1 rounded-md border border-slate-200 p-2">
+                  <div class="flex items-center justify-between">
+                    <div class="font-semibold text-[11px]">🧪 Detergente industrial</div>
+                  </div>
+                  <div class="text-[10px] text-slate-600">30–50 ml por litro de agua</div>
+                </div>
+                <div class="mt-1.5 rounded-md border border-slate-200 p-2">
+                  <div class="flex items-center justify-between">
+                    <div class="font-semibold text-[11px]">🧪 Amonio cuaternario 5ª</div>
+                    <span class="chip chip-info text-[9px]">⏱ 10 min</span>
+                  </div>
+                  <div class="text-[10px] text-slate-600">5 ml por litro · enjuagar</div>
+                </div>
+
+                <button class="mt-3 w-full bg-slate-900 text-white rounded-md py-2 text-[11px] font-semibold">Iniciar tarea →</button>
+              </div>
+            </div>
+
+            <div class="mt-5 text-[11px] text-slate-500">
+              ✓ El preview se actualiza en tiempo real al editar.
+              <br>✓ Los temporizadores se vinculan automáticamente a los pasos de desinfección.
+            </div>
+
+            <div class="mt-4 rounded-xl border border-slate-200 bg-white p-3 text-[11px]">
+              <div class="font-semibold mb-1">Sugerencias del sistema</div>
+              <div class="text-slate-600">El POE-LYD 02 suele incluir dosis de choque con hipoclorito 5,25% una vez por semana. <a href="#" class="text-blue-800">Agregar protocolo</a></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="base"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== MAPA ====================== -->
+<section id="map" class="border-b border-slate-200 bg-slate-50">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider">04 — Web Desktop</div>
+        <h2 class="text-2xl font-bold mt-1">Mapa interactivo del establecimiento</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-xl">Polígonos sobre el plano con código de color por estado de cumplimiento. Click en un área abre detalle a la derecha.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-xs text-slate-500">
+        <span class="chip chip-muted">react-konva</span>
+        <span class="chip chip-muted">Tiempo real</span>
+      </div>
+    </div>
+
+    <div class="device-laptop max-w-[1280px] mx-auto">
+      <div class="screen">
+        <div class="grid grid-cols-12 min-h-[720px]">
+
+          <!-- LEFT — areas list -->
+          <aside class="col-span-3 border-r border-slate-200 p-5 bg-white">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-semibold text-sm">Áreas</h4>
+              <span class="text-[11px] text-slate-500">6 totales</span>
+            </div>
+            <div class="border border-slate-200 rounded-lg flex items-center gap-2 px-3 py-2 text-sm mb-4">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-400"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="M21 21l-4-4"/></svg>
+              <input class="bg-transparent outline-none w-full" placeholder="Buscar área…" />
+            </div>
+
+            <ul class="space-y-2">
+              <li class="border-l-4 border-red-500 bg-red-50 rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Horno</div>
+                  <span class="chip chip-bad">2 vencidas</span>
+                </div>
+                <div class="text-[11px] text-red-800 mt-0.5">3 tareas · 1 sin foto</div>
+              </li>
+              <li class="border-l-4 border-amber-500 bg-amber-50 rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Cocina</div>
+                  <span class="chip chip-warn">1 próxima</span>
+                </div>
+                <div class="text-[11px] text-amber-900 mt-0.5">6 tareas · 2 esperando</div>
+              </li>
+              <li class="border-l-4 border-emerald-500 bg-emerald-50 rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Cuarto frío</div>
+                  <span class="chip chip-ok">al día</span>
+                </div>
+                <div class="text-[11px] text-emerald-800 mt-0.5">4 tareas · 4 completas</div>
+              </li>
+              <li class="border-l-4 border-emerald-500 bg-emerald-50 rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Almacén</div>
+                  <span class="chip chip-ok">al día</span>
+                </div>
+                <div class="text-[11px] text-emerald-800 mt-0.5">2 tareas · 2 completas</div>
+              </li>
+              <li class="border-l-4 border-amber-500 bg-amber-50 rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Baños personal</div>
+                  <span class="chip chip-warn">próxima</span>
+                </div>
+                <div class="text-[11px] text-amber-900 mt-0.5">2 tareas · 1 esperando</div>
+              </li>
+              <li class="border-l-4 border-slate-300 bg-white rounded-md p-3 text-sm">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Área de ventas</div>
+                  <span class="chip chip-muted">sin tareas</span>
+                </div>
+                <div class="text-[11px] text-slate-500 mt-0.5">No aplica programa L&D</div>
+              </li>
+            </ul>
+          </aside>
+
+          <!-- CENTER — SVG plano -->
+          <main class="col-span-6 p-6 bg-white">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-sm font-semibold">Plano · ArtesaPan · Sede Centro · Piso 1</div>
+                <div class="text-[11px] text-slate-500">Actualizado en tiempo real · 09:32 a.m.</div>
+              </div>
+              <div class="flex items-center gap-1">
+                <button class="w-8 h-8 grid place-items-center rounded-md border border-slate-200 bg-white">−</button>
+                <button class="w-8 h-8 grid place-items-center rounded-md border border-slate-200 bg-white">+</button>
+                <button class="ml-2 px-3 py-1.5 text-xs rounded-md border border-slate-200 bg-white hover:bg-slate-50">Editar áreas</button>
+              </div>
+            </div>
+
+            <div class="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/10]">
+              <!-- Plan grid background -->
+              <svg viewBox="0 0 800 500" class="w-full h-full">
+                <defs>
+                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)"/>
+
+                <!-- Outer walls -->
+                <rect x="40" y="40" width="720" height="420" fill="white" stroke="#0f172a" stroke-width="3"/>
+
+                <!-- Cocina (yellow) -->
+                <polygon class="map-poly" points="60,60 360,60 360,260 60,260" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                <text x="210" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Cocina</text>
+                <text x="210" y="172" text-anchor="middle" font-size="10" fill="#92400e">6 tareas · 1 próxima</text>
+                <circle cx="115" cy="105" r="6" fill="#d97706"/>
+                <circle cx="305" cy="120" r="6" fill="#059669"/>
+                <circle cx="250" cy="220" r="6" fill="#059669"/>
+
+                <!-- Horno (red) -->
+                <polygon class="map-poly" points="380,60 540,60 540,200 380,200" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                <text x="460" y="125" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">Horno</text>
+                <text x="460" y="142" text-anchor="middle" font-size="10" fill="#991b1b">3 · 2 vencidas</text>
+                <circle cx="420" cy="170" r="6" fill="#dc2626"/>
+                <circle cx="500" cy="170" r="6" fill="#dc2626"/>
+
+                <!-- Cuarto frío (green) -->
+                <polygon class="map-poly" points="560,60 740,60 740,200 560,200" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                <text x="650" y="125" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Cuarto frío</text>
+                <text x="650" y="142" text-anchor="middle" font-size="10" fill="#065f46">4 al día</text>
+                <circle cx="620" cy="170" r="6" fill="#059669"/>
+                <circle cx="690" cy="170" r="6" fill="#059669"/>
+
+                <!-- Almacén -->
+                <polygon class="map-poly" points="380,220 540,220 540,440 380,440" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                <text x="460" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Almacén</text>
+                <text x="460" y="337" text-anchor="middle" font-size="10" fill="#065f46">2 al día</text>
+                <circle cx="430" cy="380" r="6" fill="#059669"/>
+
+                <!-- Baños -->
+                <polygon class="map-poly" points="560,220 740,220 740,360 560,360" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                <text x="650" y="290" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Baños personal</text>
+                <text x="650" y="307" text-anchor="middle" font-size="10" fill="#92400e">2 · 1 esperando</text>
+                <circle cx="620" cy="335" r="6" fill="#d97706"/>
+
+                <!-- Área de ventas -->
+                <polygon class="map-poly" points="60,280 360,280 360,440 60,440" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+                <text x="210" y="365" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">Área de ventas</text>
+                <text x="210" y="382" text-anchor="middle" font-size="10" fill="#475569">sin programa L&amp;D</text>
+
+                <!-- Pulse marker indicating active operator -->
+                <g>
+                  <circle cx="115" cy="105" r="14" fill="#1e40af" fill-opacity=".15">
+                    <animate attributeName="r" values="6;18;6" dur="2s" repeatCount="indefinite"/>
+                    <animate attributeName="fill-opacity" values=".3;0;.3" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="115" cy="105" r="6" fill="#1e40af"/>
+                </g>
+              </svg>
+
+              <!-- Legend -->
+              <div class="absolute bottom-3 left-3 bg-white border border-slate-200 rounded-lg p-2 flex items-center gap-3 text-[11px]">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Al día</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Próximo</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Vencido</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-700 animate-pulse"></span> Operario activo</span>
+              </div>
+
+              <!-- mini avatar near cocina -->
+              <div class="absolute" style="left:11%;top:14%">
+                <div class="bg-white border border-slate-200 rounded-full shadow-sm px-2 py-1 flex items-center gap-1 text-[10px]">
+                  <span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-[8px] font-bold">JR</span>
+                  Juan · POE-LYD 02
+                </div>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex items-center gap-2 mt-4 text-xs">
+              <span class="text-slate-500 mr-1">Filtros:</span>
+              <button class="chip chip-info">📅 Hoy</button>
+              <button class="chip chip-muted">📋 Todos los programas</button>
+              <button class="chip chip-muted">⚠ Solo vencidos</button>
+              <button class="chip chip-muted">👤 Operarios activos</button>
+            </div>
+          </main>
+
+          <!-- RIGHT — area detail -->
+          <aside class="col-span-3 border-l border-slate-200 p-5 bg-white overflow-auto scrollbar-clean">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-[11px] uppercase tracking-widest text-slate-500">Detalle de área</div>
+                <h4 class="font-bold text-lg mt-1">Horno</h4>
+              </div>
+              <span class="chip chip-bad">crítica</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 mt-4">
+              <div class="rounded-lg border border-slate-200 p-2 text-center">
+                <div class="text-[10px] text-slate-500 uppercase">Tareas hoy</div>
+                <div class="text-xl font-bold">3</div>
+              </div>
+              <div class="rounded-lg border border-slate-200 p-2 text-center">
+                <div class="text-[10px] text-slate-500 uppercase">Vencidas</div>
+                <div class="text-xl font-bold text-red-600">2</div>
+              </div>
+              <div class="rounded-lg border border-slate-200 p-2 text-center">
+                <div class="text-[10px] text-slate-500 uppercase">Cumpl. mes</div>
+                <div class="text-xl font-bold">71%</div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="text-[11px] uppercase tracking-widest text-slate-500 mb-2">Tareas del área</div>
+              <ul class="space-y-2 text-sm">
+                <li class="rounded-lg border border-red-200 bg-red-50 p-3">
+                  <div class="flex items-center justify-between">
+                    <div class="font-medium">Limpieza interior horno</div>
+                    <span class="chip chip-bad">vencida</span>
+                  </div>
+                  <div class="text-[11px] text-red-800 mt-0.5">POE-HORNO-07 · Laura O. · venció 08:00</div>
+                </li>
+                <li class="rounded-lg border border-red-200 bg-red-50 p-3">
+                  <div class="flex items-center justify-between">
+                    <div class="font-medium">Sanitización pisos</div>
+                    <span class="chip chip-bad">vencida</span>
+                  </div>
+                  <div class="text-[11px] text-red-800 mt-0.5">POE-PISOS-14 · Mateo R. · venció 08:30</div>
+                </li>
+                <li class="rounded-lg border border-slate-200 bg-white p-3">
+                  <div class="flex items-center justify-between">
+                    <div class="font-medium">Control temperatura</div>
+                    <span class="chip chip-info">pendiente</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">Cada turno · 11:00</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="mt-5">
+              <div class="text-[11px] uppercase tracking-widest text-slate-500 mb-2">Activos del área</div>
+              <ul class="text-sm space-y-1.5">
+                <li class="flex items-center gap-2">🔥 Horno industrial 1 · OK</li>
+                <li class="flex items-center gap-2">🔥 Horno industrial 2 · OK</li>
+                <li class="flex items-center gap-2">🌡 Termómetro digital · cal. al día</li>
+              </ul>
+            </div>
+
+            <div class="mt-6 flex gap-2">
+              <button class="flex-1 bg-slate-900 text-white rounded-lg py-2 text-sm font-semibold">Reasignar tareas</button>
+              <button class="flex-1 border border-slate-200 rounded-lg py-2 text-sm font-medium">Abrir NC</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="base"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== MOBILE OPERARIO ====================== -->
+<section id="mobile" class="border-b border-slate-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-14">
+    <div class="flex items-end justify-between mb-6">
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider">05 — PWA Móvil</div>
+        <h2 class="text-2xl font-bold mt-1">Vista del operario (móvil)</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-xl">Mobile-first 375px. Toques mínimos 48dp. Tres pantallas críticas: lista del día, brief de tarea y checklist con temporizador de contacto.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-xs text-slate-500">
+        <span class="chip chip-muted">375 × 740</span>
+        <span class="chip chip-muted">PWA + offline-first</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 justify-items-center">
+
+      <!-- PHONE 1 — Tareas del día -->
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-widest mb-3 text-center">A · Mis tareas del día</div>
+        <div class="device-phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <!-- Status bar -->
+            <div class="pt-9 px-4 pb-2 flex items-center justify-between text-[11px] text-slate-600">
+              <span>9:32</span>
+              <div class="flex items-center gap-1">
+                <span>📶</span><span>📡</span><span>🔋 78%</span>
+              </div>
+            </div>
+            <!-- Header -->
+            <div class="px-4 pt-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-[11px] text-slate-500">Hola,</div>
+                  <div class="text-xl font-bold">Juan Restrepo</div>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-800 grid place-items-center font-semibold">JR</div>
+              </div>
+              <div class="mt-4 rounded-2xl bg-slate-900 text-white p-4">
+                <div class="flex items-center justify-between text-xs opacity-80">
+                  <span>20 may · martes</span>
+                  <span>Cocina</span>
+                </div>
+                <div class="mt-2 flex items-baseline gap-2">
+                  <div class="text-3xl font-bold">3</div>
+                  <div class="text-sm opacity-80">/ 5 tareas hoy</div>
+                </div>
+                <div class="mt-3 h-1.5 bg-white/15 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-400 rounded-full" style="width:60%"></div>
+                </div>
+                <div class="mt-2 text-[11px] opacity-80">Vas bien, te quedan 2 antes del almuerzo</div>
+              </div>
+            </div>
+
+            <!-- Filter pills -->
+            <div class="px-4 mt-4 flex items-center gap-1.5 overflow-x-auto">
+              <span class="chip chip-info shrink-0">Todas · 5</span>
+              <span class="chip chip-bad shrink-0">Vencidas · 1</span>
+              <span class="chip chip-warn shrink-0">Próximas · 1</span>
+              <span class="chip chip-ok shrink-0">Hechas · 3</span>
+            </div>
+
+            <!-- Tasks list -->
+            <div class="px-4 mt-3 space-y-2 pb-24 max-h-[440px] overflow-auto scrollbar-clean">
+              <div class="rounded-xl border-2 border-red-300 bg-red-50 p-3">
+                <div class="flex items-center justify-between">
+                  <span class="chip chip-bad">vencida · 12 min</span>
+                  <span class="text-[10px] text-slate-500">POE-LYD-02</span>
+                </div>
+                <div class="font-semibold mt-1.5 text-[15px] leading-snug">Limpiar mesas de trabajo</div>
+                <div class="text-[11px] text-slate-600">Cocina · 6 pasos · ~12 min</div>
+                <div class="mt-3 flex items-center justify-between">
+                  <div class="flex -space-x-1">
+                    <span class="w-5 h-5 rounded-full bg-slate-200 ring-2 ring-red-50 text-[8px] grid place-items-center">🥽</span>
+                    <span class="w-5 h-5 rounded-full bg-slate-200 ring-2 ring-red-50 text-[8px] grid place-items-center">🧤</span>
+                    <span class="w-5 h-5 rounded-full bg-slate-200 ring-2 ring-red-50 text-[8px] grid place-items-center">😷</span>
+                    <span class="w-5 h-5 rounded-full bg-slate-200 ring-2 ring-red-50 text-[8px] grid place-items-center">🧪</span>
+                  </div>
+                  <button class="bg-slate-900 text-white text-[12px] font-semibold rounded-lg px-3 py-1.5">Comenzar →</button>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-amber-300 bg-amber-50 p-3">
+                <div class="flex items-center justify-between">
+                  <span class="chip chip-warn">vence 09:30</span>
+                  <span class="text-[10px] text-slate-500">POE-LYD-03</span>
+                </div>
+                <div class="font-semibold mt-1.5 text-[15px] leading-snug">Desinfectar utensilios</div>
+                <div class="text-[11px] text-slate-600">Cocina · 8 pasos · ⚡ dosis de choque</div>
+                <div class="mt-3 flex items-center justify-between">
+                  <span class="text-[10px] text-amber-900">⚠ Hipoclorito 5,25%</span>
+                  <button class="bg-amber-700 text-white text-[12px] font-semibold rounded-lg px-3 py-1.5">Comenzar →</button>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-white p-3">
+                <div class="flex items-center justify-between">
+                  <span class="chip chip-info">11:00</span>
+                  <span class="text-[10px] text-slate-500">POE-FRIO-05</span>
+                </div>
+                <div class="font-semibold mt-1.5 text-[15px] leading-snug">Refrigerador 02 · interior</div>
+                <div class="text-[11px] text-slate-600">Cuarto frío · 5 pasos · semanal</div>
+              </div>
+
+              <div class="rounded-xl border border-emerald-200 bg-emerald-50/40 p-3 opacity-70">
+                <div class="flex items-center justify-between">
+                  <span class="chip chip-ok">completada</span>
+                  <span class="text-[10px] text-slate-500">07:30 ✓</span>
+                </div>
+                <div class="font-semibold mt-1.5 text-[15px] leading-snug">Sanitización pisos · Horno</div>
+                <div class="text-[11px] text-slate-600">Validada por Catalina M.</div>
+              </div>
+
+              <div class="rounded-xl border border-emerald-200 bg-emerald-50/40 p-3 opacity-70">
+                <div class="flex items-center justify-between">
+                  <span class="chip chip-ok">completada</span>
+                  <span class="text-[10px] text-slate-500">07:45 ✓</span>
+                </div>
+                <div class="font-semibold mt-1.5 text-[15px] leading-snug">Lavado de manos · turno</div>
+              </div>
+            </div>
+
+            <!-- Bottom nav -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 pt-1.5 pb-3 flex items-center justify-around">
+              <button class="flex flex-col items-center gap-0.5 px-3 text-slate-900">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+                <span class="text-[10px] font-semibold">Hoy</span>
+              </button>
+              <button class="flex flex-col items-center gap-0.5 px-3 text-slate-500">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M9 17v-2a4 4 0 014-4h4M5 8a3 3 0 100-6 3 3 0 000 6zm16 0a3 3 0 100-6 3 3 0 000 6zM5 16a3 3 0 100 6 3 3 0 000-6z"/></svg>
+                <span class="text-[10px]">Mapa</span>
+              </button>
+              <button class="flex flex-col items-center gap-0.5 px-3 text-slate-500 relative">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0"/></svg>
+                <span class="absolute top-0 right-2 w-2 h-2 rounded-full bg-red-500"></span>
+                <span class="text-[10px]">Alertas</span>
+              </button>
+              <button class="flex flex-col items-center gap-0.5 px-3 text-slate-500">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4" stroke-width="2"/><path stroke-width="2" d="M4 21a8 8 0 0116 0"/></svg>
+                <span class="text-[10px]">Perfil</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="text-[11px] text-slate-500 text-center mt-3 max-w-[260px]">
+          Hero card de progreso + lista ordenada por urgencia. Toque grande, gestos mínimos.
+        </div>
+      </div>
+
+      <!-- PHONE 2 — Brief de tarea -->
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-widest mb-3 text-center">B · Brief de tarea (paso 0)</div>
+        <div class="device-phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="pt-9 px-4 pb-2 flex items-center justify-between text-[11px] text-slate-600">
+              <span>9:34</span>
+              <div class="flex items-center gap-1"><span>📶</span><span>🔋 77%</span></div>
+            </div>
+
+            <div class="px-4 pt-1">
+              <div class="flex items-center gap-2 text-slate-600 text-sm">
+                <button class="w-9 h-9 -ml-1 grid place-items-center rounded-md hover:bg-slate-100">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="text-[11px]">POE-LYD 02</div>
+                <div class="ml-auto chip chip-bad">vencida</div>
+              </div>
+              <h3 class="text-xl font-bold mt-1 leading-snug">Limpiar mesas de trabajo y consumo</h3>
+              <div class="text-xs text-slate-500">Cocina · diaria · ~12 min</div>
+            </div>
+
+            <div class="px-4 pt-4 pb-24 overflow-auto max-h-[560px] scrollbar-clean">
+              <!-- EPP -->
+              <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="text-[11px] uppercase tracking-widest text-slate-500 mb-2">🥽 Equipo de protección</div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="flex items-center gap-2 bg-slate-50 rounded-lg p-2.5"><div class="w-7 h-7 rounded-md bg-white grid place-items-center text-lg">🥽</div><span class="text-sm font-medium">Monogafas</span></div>
+                  <div class="flex items-center gap-2 bg-slate-50 rounded-lg p-2.5"><div class="w-7 h-7 rounded-md bg-white grid place-items-center text-lg">🧤</div><span class="text-sm font-medium">Guantes</span></div>
+                  <div class="flex items-center gap-2 bg-slate-50 rounded-lg p-2.5"><div class="w-7 h-7 rounded-md bg-white grid place-items-center text-lg">😷</div><span class="text-sm font-medium">Tapabocas</span></div>
+                  <div class="flex items-center gap-2 bg-slate-50 rounded-lg p-2.5"><div class="w-7 h-7 rounded-md bg-white grid place-items-center text-lg">👕</div><span class="text-sm font-medium">Delantal</span></div>
+                </div>
+              </div>
+
+              <!-- Solutions -->
+              <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-500">Preparar soluciones</div>
+              <div class="mt-2 rounded-2xl border border-slate-200 p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 grid place-items-center">🧪</div>
+                    <div>
+                      <div class="font-semibold leading-tight">Detergente industrial</div>
+                      <div class="text-[11px] text-slate-500">para esponja / cepillo</div>
+                    </div>
+                  </div>
+                  <button class="text-blue-800 text-xs font-semibold">Ficha →</button>
+                </div>
+                <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                  <div class="rounded-lg bg-blue-50 p-2">
+                    <div class="text-lg font-bold text-blue-900 leading-tight">30–50</div>
+                    <div class="text-[10px] text-blue-800 uppercase tracking-wider">ml/L</div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 p-2">
+                    <div class="text-lg font-bold leading-tight">—</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider">tiempo</div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 p-2">
+                    <div class="text-lg font-bold leading-tight">Sí</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider">enjuagar</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-2 rounded-2xl border border-slate-200 p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 grid place-items-center">🧪</div>
+                    <div>
+                      <div class="font-semibold leading-tight">Amonio cuaternario 5ª gen.</div>
+                      <div class="text-[11px] text-slate-500">para atomizador</div>
+                    </div>
+                  </div>
+                  <button class="text-blue-800 text-xs font-semibold">Ficha →</button>
+                </div>
+                <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                  <div class="rounded-lg bg-emerald-50 p-2">
+                    <div class="text-lg font-bold text-emerald-900 leading-tight">5</div>
+                    <div class="text-[10px] text-emerald-800 uppercase tracking-wider">ml/L</div>
+                  </div>
+                  <div class="rounded-lg bg-amber-50 p-2">
+                    <div class="text-lg font-bold text-amber-900 leading-tight">10:00</div>
+                    <div class="text-[10px] text-amber-800 uppercase tracking-wider">⏱ contacto</div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 p-2">
+                    <div class="text-lg font-bold leading-tight">Sí</div>
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider">enjuagar</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Implementos -->
+              <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-500">Implementos</div>
+              <div class="flex flex-wrap gap-1.5 mt-1">
+                <span class="chip chip-muted">esponjas</span>
+                <span class="chip chip-muted">cepillo</span>
+                <span class="chip chip-muted">atomizador</span>
+                <span class="chip chip-muted">paño limpio</span>
+                <span class="chip chip-muted">balde</span>
+              </div>
+            </div>
+
+            <!-- Sticky CTA -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4">
+              <button class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2">
+                Iniciar tarea
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+              <div class="text-[11px] text-slate-500 text-center mt-1.5">Tiempo estimado: 12 min</div>
+            </div>
+          </div>
+        </div>
+        <div class="text-[11px] text-slate-500 text-center mt-3 max-w-[260px]">
+          EPP + dosificación específica para la superficie. El operario no busca nada en otra parte.
+        </div>
+      </div>
+
+      <!-- PHONE 3 — Checklist + timer -->
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-widest mb-3 text-center">C · Checklist + temporizador</div>
+        <div class="device-phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="pt-9 px-4 pb-2 flex items-center justify-between text-[11px] text-slate-600">
+              <span>9:48</span>
+              <div class="flex items-center gap-1"><span>📶</span><span>🔋 76%</span></div>
+            </div>
+
+            <!-- Mini header -->
+            <div class="px-4 pt-1">
+              <div class="flex items-center justify-between text-slate-600 text-sm">
+                <button class="w-9 h-9 -ml-1 grid place-items-center rounded-md hover:bg-slate-100">✕</button>
+                <div class="text-[11px]">Mesas de trabajo · Cocina</div>
+                <button class="text-[11px] font-semibold text-red-700">No conformidad</button>
+              </div>
+              <!-- Progress -->
+              <div class="mt-2 flex items-center gap-2">
+                <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-slate-900 rounded-full" style="width:67%"></div>
+                </div>
+                <div class="text-[11px] font-semibold">8 / 12</div>
+              </div>
+              <!-- Phase tabs -->
+              <div class="mt-3 flex items-center gap-1 text-[11px]">
+                <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold">PREPARACIÓN ✓</span>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold">LIMPIEZA ✓</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-900 text-white font-semibold">DESINFECCIÓN</span>
+              </div>
+            </div>
+
+            <!-- Timer hero -->
+            <div class="mx-4 mt-4 rounded-2xl bg-amber-50 border border-amber-200 p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-[11px] uppercase tracking-widest text-amber-800">⏱ Tiempo de contacto</div>
+                  <div class="text-3xl font-bold text-amber-900 mt-1 font-mono tabular-nums">08:43</div>
+                  <div class="text-[11px] text-amber-800 mt-0.5">de 10:00 · Amonio cuaternario</div>
+                </div>
+                <!-- Circular -->
+                <svg width="64" height="64" viewBox="0 0 64 64">
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="#fde68a" stroke-width="6"/>
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="#d97706" stroke-width="6"
+                          stroke-dasharray="163" stroke-dashoffset="22"
+                          transform="rotate(-90 32 32)" stroke-linecap="round"/>
+                  <text x="32" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">87%</text>
+                </svg>
+              </div>
+              <button class="mt-3 w-full bg-white border border-amber-300 text-amber-900 rounded-lg py-2 text-xs font-semibold">Ya enjuagué · saltar timer</button>
+            </div>
+
+            <!-- Checklist desinfección -->
+            <div class="px-4 mt-4 pb-32 overflow-auto max-h-[300px] scrollbar-clean space-y-2">
+              <div class="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-600 text-white grid place-items-center text-xs mt-0.5">✓</div>
+                <div class="flex-1 text-sm">
+                  <div class="font-medium">Preparar solución desinfectante</div>
+                  <div class="text-[11px] text-emerald-800">Amonio cuat. 5 ml/L · ✓ 09:42</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-600 text-white grid place-items-center text-xs mt-0.5">✓</div>
+                <div class="flex-1 text-sm">
+                  <div class="font-medium">Esparcir con atomizador uniformemente</div>
+                  <div class="text-[11px] text-emerald-800">📸 1 foto · ✓ 09:44</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 rounded-lg border-2 border-blue-500 bg-blue-50 p-3 ring-soft">
+                <div class="w-6 h-6 rounded-full bg-blue-700 text-white grid place-items-center text-xs mt-0.5 animate-pulse">●</div>
+                <div class="flex-1 text-sm">
+                  <div class="font-semibold text-blue-900">Dejar actuar 10 minutos</div>
+                  <div class="text-[11px] text-blue-800">En curso · esperando temporizador</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-3">
+                <div class="w-6 h-6 rounded-full border-2 border-slate-300 mt-0.5"></div>
+                <div class="flex-1 text-sm">
+                  <div class="font-medium">Enjuagar con agua potable</div>
+                  <div class="text-[11px] text-slate-500">📸 foto requerida</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-3">
+                <div class="w-6 h-6 rounded-full border-2 border-slate-300 mt-0.5"></div>
+                <div class="flex-1 text-sm">
+                  <div class="font-medium">Escurrir y secar con paño limpio</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sticky CTA -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 space-y-2">
+              <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2">
+                📸 Tomar foto del paso
+              </button>
+              <div class="flex gap-2">
+                <button class="flex-1 border border-slate-200 rounded-xl py-2.5 text-sm font-medium">Pausar</button>
+                <button class="flex-1 border border-slate-200 rounded-xl py-2.5 text-sm font-medium">Observación</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-[11px] text-slate-500 text-center mt-3 max-w-[260px]">
+          Temporizador prominente, paso activo destacado, foto siempre a un toque.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================== FOOTER NAV ====================== -->
+<footer class="bg-slate-900 text-white">
+  <div class="max-w-[1400px] mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div>
+        <div class="text-xs uppercase tracking-widest text-slate-400">Opción 1 · Light Clínico</div>
+        <h3 class="text-2xl font-bold mt-1">Listo para implementar en React + Tailwind v4.</h3>
+        <p class="text-slate-300 text-sm mt-1">Inter · slate · acento blue-800 · 8px grid · radius xl · WCAG AA contrast.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="../opcion-2-verde-sanitario/index.html" class="bg-white/10 hover:bg-white/15 rounded-lg px-4 py-2 text-sm">Ver Opción 2 →</a>
+        <a href="../opcion-3-pastel-moderno/index.html" class="bg-white/10 hover:bg-white/15 rounded-lg px-4 py-2 text-sm">Ver Opción 3 →</a>
+        <a href="../index.html" class="bg-white text-slate-900 rounded-lg px-4 py-2 text-sm font-semibold">Volver al índice</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tabs nav highlight
+  const links = document.querySelectorAll('a.nav-pill');
+  const sections = ['login','dashboard','wizard','map','mobile'];
+  const setActive = () => {
+    let active = sections[0];
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 120) active = id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+  };
+  window.addEventListener('scroll', setActive);
+  setActive();
+</script>
+
+</body>
+</html>

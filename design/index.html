@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SanitIA · Diseño de interfaces — 3 opciones</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  html,body{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;color:#0f172a;background:#fafafa;letter-spacing:-0.011em;}
+  .mono{font-family:'Geist Mono',ui-monospace,monospace;letter-spacing:0;}
+  .hero-bg{
+    background:
+      radial-gradient(800px 400px at 90% 0%, rgba(139,92,246,.12), transparent 60%),
+      radial-gradient(600px 300px at 0% 100%, rgba(16,185,129,.10), transparent 60%),
+      radial-gradient(500px 250px at 60% 110%, rgba(30,64,175,.08), transparent 60%);
+  }
+
+  /* Card hover */
+  .opt-card{transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;}
+  .opt-card:hover{transform:translateY(-4px); box-shadow:0 30px 60px -25px rgba(15,23,42,.22);}
+
+  /* Mini device previews */
+  .mini-laptop{
+    border-radius:12px; padding:6px 6px 0 6px;
+    border:1px solid #e2e8f0;
+    background:#f8fafc;
+  }
+  .mini-laptop .scr{border-radius:6px;overflow:hidden;background:#fff;}
+  .mini-laptop .base{height:6px;background:#e2e8f0;border-radius:0 0 12px 12px;margin:0 -12px;}
+
+  .mini-phone{
+    width:80px;border-radius:14px;padding:3px;
+  }
+  .mini-phone .scr{border-radius:11px;overflow:hidden;background:#fff;height:140px;position:relative;}
+
+  /* Style 1 — Light Clínico */
+  .s1-bg{background:linear-gradient(180deg,#ffffff,#f8fafc);}
+  .s1-accent{background:#0f172a;color:#fff;}
+  .s1-soft{background:#f1f5f9;}
+
+  /* Style 2 — Verde Sanitario */
+  .s2-bg{background:linear-gradient(180deg,#f0fdf4,#ffffff);}
+  .s2-accent{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;}
+  .s2-soft{background:#dcfce7;}
+
+  /* Style 3 — Pastel */
+  .s3-bg{background:linear-gradient(135deg,#faf5ff,#fff7ed);}
+  .s3-accent{background:linear-gradient(135deg,#8b5cf6,#f97316);color:#fff;}
+  .s3-soft{background:#f5f3ff;}
+
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:9999px;font-size:11px;font-weight:600;}
+</style>
+</head>
+<body>
+
+<!-- ========= NAV ========= -->
+<header class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-slate-200">
+  <div class="max-w-[1300px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-slate-900 via-violet-700 to-emerald-600 grid place-items-center text-white font-extrabold shadow-md">S</div>
+      <div>
+        <div class="text-sm font-extrabold leading-none">SanitIA — Diseño de interfaces</div>
+        <div class="text-xs text-slate-500">Plan de implementación v2 · 3 opciones visuales</div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-2 text-xs">
+      <span class="chip" style="background:#f1f5f9;color:#475569">React 19</span>
+      <span class="chip" style="background:#f1f5f9;color:#475569">Tailwind v4</span>
+      <span class="chip" style="background:#f1f5f9;color:#475569">Vite PWA</span>
+      <span class="chip" style="background:#f1f5f9;color:#475569">shadcn/ui</span>
+    </div>
+  </div>
+</header>
+
+<!-- ========= HERO ========= -->
+<section class="hero-bg border-b border-slate-200">
+  <div class="max-w-[1300px] mx-auto px-6 py-16">
+    <div class="text-xs uppercase tracking-widest text-slate-500 mb-4">SanitIA · Plataforma de cumplimiento sanitario</div>
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight max-w-4xl leading-tight">
+      Diseño de interfaces — <span class="bg-gradient-to-r from-emerald-600 via-violet-600 to-orange-500 bg-clip-text text-transparent">3 direcciones visuales</span> a elegir.
+    </h1>
+    <p class="mt-5 text-slate-600 max-w-3xl text-lg">
+      Tres propuestas completas para web (admin / consultor) y móvil (operario), construidas sobre el mismo Plan de Implementación v2. Cada opción cubre login, dashboard, constructor de POE, mapa interactivo y la vista del operario en PWA. Todas las opciones son <b>light</b> (ninguna dark).
+    </p>
+
+    <div class="mt-8 grid grid-cols-2 md:grid-cols-5 gap-3 max-w-3xl text-sm">
+      <div class="rounded-xl border border-slate-200 bg-white p-3">
+        <div class="mono text-xs text-slate-500">01</div>
+        <div class="font-bold mt-1">Login</div>
+        <div class="text-xs text-slate-500">Cognito + SSO</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-3">
+        <div class="mono text-xs text-slate-500">02</div>
+        <div class="font-bold mt-1">Dashboard</div>
+        <div class="text-xs text-slate-500">KPIs + validación</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-3">
+        <div class="mono text-xs text-slate-500">03</div>
+        <div class="font-bold mt-1">Wizard POE</div>
+        <div class="text-xs text-slate-500">Editor + preview</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-3">
+        <div class="mono text-xs text-slate-500">04</div>
+        <div class="font-bold mt-1">Mapa</div>
+        <div class="text-xs text-slate-500">react-konva</div>
+      </div>
+      <div class="rounded-xl border border-slate-200 bg-white p-3">
+        <div class="mono text-xs text-slate-500">05</div>
+        <div class="font-bold mt-1">Móvil PWA</div>
+        <div class="text-xs text-slate-500">Operario · 375px</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= OPCIONES ========= -->
+<section class="border-b border-slate-200">
+  <div class="max-w-[1300px] mx-auto px-6 py-16">
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- ============ OPCIÓN 1 ============ -->
+      <a href="opcion-1-light-clinico/index.html" class="opt-card group rounded-3xl border border-slate-200 bg-white overflow-hidden block">
+        <!-- Preview header -->
+        <div class="s1-bg p-6 border-b border-slate-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[10px] uppercase tracking-widest text-slate-500">Opción 1</div>
+              <h3 class="text-xl font-extrabold mt-0.5">Light Clínico</h3>
+            </div>
+            <span class="chip" style="background:#0f172a;color:#fff">light</span>
+          </div>
+
+          <!-- Mini preview -->
+          <div class="mt-5 flex items-end gap-3">
+            <div class="mini-laptop flex-1">
+              <div class="scr">
+                <div class="bg-slate-50 px-2 py-1.5 border-b border-slate-200 flex items-center gap-1">
+                  <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                </div>
+                <div class="grid grid-cols-5 h-[110px]">
+                  <div class="col-span-1 bg-slate-50 border-r border-slate-200 p-1.5 space-y-1">
+                    <div class="h-1.5 bg-slate-900 rounded"></div>
+                    <div class="h-1 bg-slate-200 rounded"></div>
+                    <div class="h-1 bg-slate-200 rounded"></div>
+                    <div class="h-1 bg-slate-200 rounded"></div>
+                  </div>
+                  <div class="col-span-4 p-1.5 space-y-1">
+                    <div class="flex gap-1">
+                      <div class="flex-1 h-5 rounded bg-slate-100 border border-slate-200"></div>
+                      <div class="flex-1 h-5 rounded bg-emerald-100 border border-emerald-200"></div>
+                      <div class="flex-1 h-5 rounded bg-amber-100 border border-amber-200"></div>
+                      <div class="flex-1 h-5 rounded bg-red-100 border border-red-200"></div>
+                    </div>
+                    <div class="h-2 bg-slate-200 rounded w-1/2"></div>
+                    <div class="grid grid-cols-3 gap-1">
+                      <div class="h-8 bg-slate-100 rounded"></div>
+                      <div class="h-8 bg-slate-100 rounded"></div>
+                      <div class="h-8 bg-slate-100 rounded"></div>
+                    </div>
+                    <div class="h-1 bg-slate-200 rounded w-2/3"></div>
+                    <div class="h-1 bg-slate-200 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="base"></div>
+            </div>
+            <div class="mini-phone bg-slate-900">
+              <div class="scr">
+                <div class="bg-slate-900 h-1.5 mx-3 rounded-b-md"></div>
+                <div class="p-1.5 space-y-1">
+                  <div class="h-2 bg-slate-200 rounded w-3/4"></div>
+                  <div class="rounded-md bg-slate-900 h-9 mt-1 p-1">
+                    <div class="h-1 bg-white/40 rounded w-1/3"></div>
+                    <div class="h-2 bg-white rounded w-1/2 mt-0.5"></div>
+                    <div class="h-1 bg-white/30 rounded mt-1"></div>
+                  </div>
+                  <div class="rounded-md border border-red-200 bg-red-50 h-7 p-1">
+                    <div class="h-1 bg-red-300 rounded w-1/2"></div>
+                    <div class="h-1.5 bg-red-700/80 rounded mt-1"></div>
+                  </div>
+                  <div class="rounded-md border border-amber-200 bg-amber-50 h-7 p-1">
+                    <div class="h-1 bg-amber-300 rounded w-1/2"></div>
+                    <div class="h-1.5 bg-amber-700/80 rounded mt-1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <p class="text-sm text-slate-600">Inspirado en <b>Linear</b> y <b>Apple HIG</b>. Tipografía Inter, slate como base, acento blue-800 muy discreto. Información densa cuando hace falta, silenciosa cuando no.</p>
+
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="chip" style="background:#f1f5f9;color:#475569">Inter</span>
+            <span class="chip" style="background:#f1f5f9;color:#475569">Slate</span>
+            <span class="chip" style="background:#eff6ff;color:#1e3a8a">Blue-800</span>
+            <span class="chip" style="background:#f1f5f9;color:#475569">Radius xl</span>
+            <span class="chip" style="background:#f1f5f9;color:#475569">WCAG AA</span>
+          </div>
+
+          <div class="mt-5 grid grid-cols-3 gap-2 text-[11px]">
+            <div class="rounded-lg bg-slate-50 p-2">
+              <div class="font-bold">Ideal para</div>
+              <div class="text-slate-600">Consultores, equipos técnicos</div>
+            </div>
+            <div class="rounded-lg bg-slate-50 p-2">
+              <div class="font-bold">Densidad</div>
+              <div class="text-slate-600">Alta · información rica</div>
+            </div>
+            <div class="rounded-lg bg-slate-50 p-2">
+              <div class="font-bold">Tono</div>
+              <div class="text-slate-600">Profesional, sobrio</div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="w-5 h-5 rounded-md bg-white border border-slate-200"></div>
+              <div class="w-5 h-5 rounded-md bg-slate-900"></div>
+              <div class="w-5 h-5 rounded-md bg-blue-800"></div>
+              <div class="w-5 h-5 rounded-md bg-emerald-500"></div>
+              <div class="w-5 h-5 rounded-md bg-amber-500"></div>
+              <div class="w-5 h-5 rounded-md bg-red-500"></div>
+            </div>
+            <span class="text-sm font-bold text-slate-900 group-hover:underline">Ver opción 1 →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ============ OPCIÓN 2 ============ -->
+      <a href="opcion-2-verde-sanitario/index.html" class="opt-card group rounded-3xl border border-emerald-100 bg-white overflow-hidden block">
+        <div class="s2-bg p-6 border-b border-emerald-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[10px] uppercase tracking-widest text-emerald-700">Opción 2</div>
+              <h3 class="text-xl font-extrabold mt-0.5 text-emerald-950">Verde Sanitario</h3>
+            </div>
+            <span class="chip" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff">light · salud</span>
+          </div>
+
+          <div class="mt-5 flex items-end gap-3">
+            <div class="mini-laptop flex-1" style="background:#ecfdf5;border-color:#dceae3">
+              <div class="scr" style="border:1px solid #dceae3">
+                <div class="px-2 py-1.5 border-b" style="background:#f0fdf4;border-color:#dceae3">
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-5 h-[110px]">
+                  <div class="col-span-1 p-1.5 space-y-1" style="background:#f0fdf4;border-right:1px solid #dceae3">
+                    <div class="h-1.5 rounded" style="background:#16a34a"></div>
+                    <div class="h-1 rounded" style="background:#bbd9cb"></div>
+                    <div class="h-1 rounded" style="background:#bbd9cb"></div>
+                  </div>
+                  <div class="col-span-4 p-1.5 space-y-1">
+                    <div class="rounded-md p-1" style="background:linear-gradient(135deg,#16a34a,#15803d);height:28px">
+                      <div class="h-1 bg-white/40 rounded w-1/4"></div>
+                      <div class="h-2.5 bg-white/90 rounded w-1/3 mt-0.5"></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1">
+                      <div class="h-8 bg-emerald-50 rounded border border-emerald-100"></div>
+                      <div class="h-8 bg-rose-50 rounded border border-rose-100"></div>
+                      <div class="h-8 bg-emerald-50 rounded border border-emerald-100"></div>
+                    </div>
+                    <div class="h-1 rounded w-2/3" style="background:#bbd9cb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="base" style="background:#bbd9cb"></div>
+            </div>
+            <div class="mini-phone" style="background:#0b3b2e">
+              <div class="scr">
+                <div class="h-1.5 mx-3 rounded-b-md" style="background:#0b3b2e"></div>
+                <div class="p-1.5 space-y-1">
+                  <div class="h-2 rounded w-3/4" style="background:#bbd9cb"></div>
+                  <div class="rounded-md h-9 mt-1 p-1" style="background:linear-gradient(135deg,#16a34a,#15803d)">
+                    <div class="h-1 bg-white/40 rounded w-1/3"></div>
+                    <div class="h-2 bg-white rounded w-1/2 mt-0.5"></div>
+                  </div>
+                  <div class="rounded-md h-7 p-1 border border-rose-200 bg-rose-50">
+                    <div class="h-1 bg-rose-300 rounded w-1/2"></div>
+                    <div class="h-1.5 bg-rose-700/80 rounded mt-1"></div>
+                  </div>
+                  <div class="rounded-md h-7 p-1 border border-amber-200 bg-amber-50">
+                    <div class="h-1 bg-amber-300 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <p class="text-sm text-emerald-900/80">Tono de <b>salud pública colombiana</b>. Verdes institucionales + azul cielo de soporte. Tipografía Plus Jakarta Sans (humanista). Cercano sin perder rigor INVIMA.</p>
+
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="chip" style="background:#dcfce7;color:#15803d">Plus Jakarta</span>
+            <span class="chip" style="background:#dcfce7;color:#15803d">Emerald-600</span>
+            <span class="chip" style="background:#e0f2fe;color:#075985">Sky-600</span>
+            <span class="chip" style="background:#dcfce7;color:#15803d">Radius 2xl</span>
+            <span class="chip" style="background:#dcfce7;color:#15803d">Gradientes suaves</span>
+          </div>
+
+          <div class="mt-5 grid grid-cols-3 gap-2 text-[11px]">
+            <div class="rounded-lg p-2" style="background:#ecfdf5">
+              <div class="font-bold text-emerald-900">Ideal para</div>
+              <div class="text-emerald-800">Sector salud, alimentos</div>
+            </div>
+            <div class="rounded-lg p-2" style="background:#ecfdf5">
+              <div class="font-bold text-emerald-900">Densidad</div>
+              <div class="text-emerald-800">Media · respira más</div>
+            </div>
+            <div class="rounded-lg p-2" style="background:#ecfdf5">
+              <div class="font-bold text-emerald-900">Tono</div>
+              <div class="text-emerald-800">Confiable, cálido</div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="w-5 h-5 rounded-md bg-white border border-emerald-200"></div>
+              <div class="w-5 h-5 rounded-md bg-emerald-700"></div>
+              <div class="w-5 h-5 rounded-md bg-emerald-400"></div>
+              <div class="w-5 h-5 rounded-md bg-sky-600"></div>
+              <div class="w-5 h-5 rounded-md bg-amber-500"></div>
+              <div class="w-5 h-5 rounded-md bg-rose-500"></div>
+            </div>
+            <span class="text-sm font-bold text-emerald-700 group-hover:underline">Ver opción 2 →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ============ OPCIÓN 3 ============ -->
+      <a href="opcion-3-pastel-moderno/index.html" class="opt-card group rounded-3xl border border-violet-100 bg-white overflow-hidden block">
+        <div class="s3-bg p-6 border-b border-violet-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[10px] uppercase tracking-widest text-violet-700">Opción 3</div>
+              <h3 class="text-xl font-extrabold mt-0.5">Pastel Moderno</h3>
+            </div>
+            <span class="chip" style="background:linear-gradient(135deg,#8b5cf6,#f97316);color:#fff">light · soft</span>
+          </div>
+
+          <div class="mt-5 flex items-end gap-3">
+            <div class="mini-laptop flex-1" style="background:#f5f3ff;border-color:#ece8f5">
+              <div class="scr" style="border:1px solid #ece8f5">
+                <div class="px-2 py-1.5 border-b" style="background:#faf9fc;border-color:#ece8f5">
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 rounded-full" style="background:#d6cef0"></div>
+                    <div class="w-1.5 h-1.5 rounded-full" style="background:#d6cef0"></div>
+                    <div class="w-1.5 h-1.5 rounded-full" style="background:#d6cef0"></div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-5 h-[110px]">
+                  <div class="col-span-1 p-1.5 space-y-1" style="background:#faf9fc;border-right:1px solid #ece8f5">
+                    <div class="h-1.5 rounded" style="background:#1b1530"></div>
+                    <div class="h-1 rounded" style="background:#ece8f5"></div>
+                    <div class="h-1 rounded" style="background:#ece8f5"></div>
+                  </div>
+                  <div class="col-span-4 p-1.5 space-y-1">
+                    <div class="rounded-md p-1" style="background:linear-gradient(135deg,#fdf4ff,#fff7ed);height:28px;border:1px solid #ece8f5">
+                      <div class="h-1 bg-violet-300/60 rounded w-1/4"></div>
+                      <div class="h-2.5 rounded w-1/3 mt-0.5" style="background:#1b1530"></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-1">
+                      <div class="h-7 bg-rose-50 rounded border border-rose-100"></div>
+                      <div class="h-7 bg-orange-50 rounded border border-orange-100"></div>
+                      <div class="h-7 bg-violet-50 rounded border border-violet-100"></div>
+                      <div class="h-7 bg-emerald-50 rounded border border-emerald-100"></div>
+                    </div>
+                    <div class="h-1 rounded w-2/3" style="background:#d6cef0"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="base" style="background:#d6cef0"></div>
+            </div>
+            <div class="mini-phone" style="background:#1b1530">
+              <div class="scr">
+                <div class="h-1.5 mx-3 rounded-b-md" style="background:#1b1530"></div>
+                <div class="p-1.5 space-y-1">
+                  <div class="h-2 rounded w-3/4" style="background:#d6cef0"></div>
+                  <div class="rounded-md h-9 mt-1 p-1" style="background:linear-gradient(135deg,#8b5cf6,#f97316)">
+                    <div class="h-1 bg-white/40 rounded w-1/3"></div>
+                    <div class="h-2 bg-white rounded w-1/2 mt-0.5"></div>
+                  </div>
+                  <div class="rounded-md h-7 p-1 border-2 border-rose-200 bg-rose-50">
+                    <div class="h-1 bg-rose-300 rounded w-1/2"></div>
+                    <div class="h-1.5 bg-rose-700/80 rounded mt-1"></div>
+                  </div>
+                  <div class="rounded-md h-7 p-1 border-2 border-orange-200 bg-orange-50">
+                    <div class="h-1 bg-orange-300 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <p class="text-sm text-violet-900/80">Inspirado en <b>Notion</b>, <b>Linear</b> y <b>Vercel</b>. Lila + melocotón + menta sobre fondos casi blancos. DM Sans + Geist Mono para datos. Cumplimiento que no parece banca.</p>
+
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="chip" style="background:#f5f3ff;color:#5b21b6">DM Sans</span>
+            <span class="chip" style="background:#f5f3ff;color:#5b21b6">Violet-500</span>
+            <span class="chip" style="background:#fff7ed;color:#9a3412">Orange-500</span>
+            <span class="chip" style="background:#ecfdf5;color:#047857">Mint accent</span>
+            <span class="chip" style="background:#f5f3ff;color:#5b21b6">Radius 3xl</span>
+          </div>
+
+          <div class="mt-5 grid grid-cols-3 gap-2 text-[11px]">
+            <div class="rounded-lg p-2" style="background:#faf9fc">
+              <div class="font-bold">Ideal para</div>
+              <div class="text-violet-700">Startups, equipos jóvenes</div>
+            </div>
+            <div class="rounded-lg p-2" style="background:#faf9fc">
+              <div class="font-bold">Densidad</div>
+              <div class="text-violet-700">Media-baja · expresivo</div>
+            </div>
+            <div class="rounded-lg p-2" style="background:#faf9fc">
+              <div class="font-bold">Tono</div>
+              <div class="text-violet-700">Optimista, moderno</div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="w-5 h-5 rounded-md bg-white border border-violet-200"></div>
+              <div class="w-5 h-5 rounded-md" style="background:#1b1530"></div>
+              <div class="w-5 h-5 rounded-md bg-violet-500"></div>
+              <div class="w-5 h-5 rounded-md bg-orange-400"></div>
+              <div class="w-5 h-5 rounded-md bg-emerald-500"></div>
+              <div class="w-5 h-5 rounded-md bg-sky-500"></div>
+            </div>
+            <span class="text-sm font-bold text-violet-700 group-hover:underline">Ver opción 3 →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========= COMPARATIVA ========= -->
+<section class="border-b border-slate-200 bg-white">
+  <div class="max-w-[1300px] mx-auto px-6 py-16">
+    <div class="text-xs uppercase tracking-widest text-slate-500 mb-2">Comparativa rápida</div>
+    <h2 class="text-3xl font-extrabold tracking-tight">¿Cuál elegir?</h2>
+    <p class="text-slate-600 mt-2 max-w-2xl">Las tres opciones cubren exactamente las mismas pantallas y el mismo plan v2. La elección es estética y de tono — todas son técnicamente equivalentes.</p>
+
+    <div class="mt-8 overflow-x-auto rounded-2xl border border-slate-200">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-600">
+          <tr>
+            <th class="text-left font-semibold px-5 py-3">Atributo</th>
+            <th class="text-left font-semibold px-5 py-3">Light Clínico</th>
+            <th class="text-left font-semibold px-5 py-3">Verde Sanitario</th>
+            <th class="text-left font-semibold px-5 py-3">Pastel Moderno</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Inspiración</td>
+            <td class="px-5 py-3">Linear · Apple HIG · Stripe</td>
+            <td class="px-5 py-3">Salud pública · Headspace</td>
+            <td class="px-5 py-3">Notion · Linear · Vercel · Arc</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Tipografía</td>
+            <td class="px-5 py-3 mono">Inter</td>
+            <td class="px-5 py-3 mono">Plus Jakarta Sans</td>
+            <td class="px-5 py-3 mono">DM Sans + Geist Mono</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Color de marca</td>
+            <td class="px-5 py-3">Slate-900 + Blue-800</td>
+            <td class="px-5 py-3">Emerald-600 + Sky-600</td>
+            <td class="px-5 py-3">Violet-500 + Orange-400 + Mint</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Forma y radio</td>
+            <td class="px-5 py-3">Bordes finos · radius xl</td>
+            <td class="px-5 py-3">Cards grandes · radius 2xl</td>
+            <td class="px-5 py-3">Blobs · radius 3xl · gradients</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Tono</td>
+            <td class="px-5 py-3">Sobrio, técnico, denso</td>
+            <td class="px-5 py-3">Profesional, confiable, cálido</td>
+            <td class="px-5 py-3">Optimista, moderno, expresivo</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Mejor encaje</td>
+            <td class="px-5 py-3">Consultores · equipos técnicos · auditores</td>
+            <td class="px-5 py-3">Sector salud · alimentos · admins establishment</td>
+            <td class="px-5 py-3">Startups · marketing fuerte · clientes nuevos</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 font-semibold text-slate-500">Accesibilidad</td>
+            <td class="px-5 py-3 text-emerald-700 font-semibold">AA / AAA en textos</td>
+            <td class="px-5 py-3 text-emerald-700 font-semibold">AA</td>
+            <td class="px-5 py-3 text-emerald-700 font-semibold">AA (validar pasteles)</td>
+          </tr>
+          <tr class="bg-slate-50">
+            <td class="px-5 py-3 font-semibold text-slate-500">Estado</td>
+            <td class="px-5 py-3"><a href="opcion-1-light-clinico/index.html" class="font-bold text-blue-800 hover:underline">Ver opción →</a></td>
+            <td class="px-5 py-3"><a href="opcion-2-verde-sanitario/index.html" class="font-bold text-emerald-700 hover:underline">Ver opción →</a></td>
+            <td class="px-5 py-3"><a href="opcion-3-pastel-moderno/index.html" class="font-bold text-violet-700 hover:underline">Ver opción →</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========= QUÉ INCLUYE CADA OPCIÓN ========= -->
+<section class="border-b border-slate-200 bg-slate-50">
+  <div class="max-w-[1300px] mx-auto px-6 py-16">
+    <div class="text-xs uppercase tracking-widest text-slate-500 mb-2">Alcance de cada opción</div>
+    <h2 class="text-3xl font-extrabold tracking-tight">Las 5 pantallas críticas, en las 3 opciones.</h2>
+    <p class="text-slate-600 mt-2 max-w-2xl">Cada archivo <span class="mono">index.html</span> contiene un showcase scrolleable con anclas de navegación a las 5 pantallas. Diseñado para revisar e iterar en equipo.</p>
+
+    <div class="mt-8 grid md:grid-cols-5 gap-3">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="text-2xl">🔐</div>
+        <div class="font-extrabold mt-2">01 · Login</div>
+        <p class="text-xs text-slate-600 mt-1">Layout asimétrico. Cognito + SSO + MFA opcional. Detección de dispositivo para redirigir al operario en móvil.</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="text-2xl">📊</div>
+        <div class="font-extrabold mt-2">02 · Dashboard admin</div>
+        <p class="text-xs text-slate-600 mt-1">Sidebar + KPIs (cumplimiento, vencidas, NC), cumplimiento por programa, bandeja de validación, próxima INVIMA.</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="text-2xl">🧪</div>
+        <div class="font-extrabold mt-2">03 · Wizard POE</div>
+        <p class="text-xs text-slate-600 mt-1">Pasos · editor central · preview vivo del operario. Productos con dosificación, dosis de choque, vínculo de temporizadores.</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="text-2xl">🗺</div>
+        <div class="font-extrabold mt-2">04 · Mapa interactivo</div>
+        <p class="text-xs text-slate-600 mt-1">Plano SVG con polígonos por área, código de color por estado, operarios activos en tiempo real, panel de detalle.</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="text-2xl">📱</div>
+        <div class="font-extrabold mt-2">05 · Móvil PWA</div>
+        <p class="text-xs text-slate-600 mt-1">3 pantallas mobile-first 375px: lista de tareas del día, brief de tarea (EPP + productos), checklist + timer de contacto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= STACK Y NEXT STEPS ========= -->
+<section class="border-b border-slate-200">
+  <div class="max-w-[1300px] mx-auto px-6 py-16 grid md:grid-cols-2 gap-10">
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mb-2">Stack de implementación</div>
+      <h2 class="text-3xl font-extrabold tracking-tight">Listo para React JS.</h2>
+      <p class="text-slate-600 mt-3">Los diseños están construidos con Tailwind CDN y clases utility puras, idénticas a las que se usarán en producción con Tailwind v4 + React 19. La traducción a JSX es prácticamente directa.</p>
+
+      <div class="mt-6 space-y-3">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center font-bold text-slate-700">⚛</div>
+          <div>
+            <div class="font-bold">React 19 + TypeScript</div>
+            <div class="text-sm text-slate-600">Componentes funcionales, sin React.FC, hooks + TanStack Query v5.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center font-bold text-slate-700">🎨</div>
+          <div>
+            <div class="font-bold">Tailwind CSS v4</div>
+            <div class="text-sm text-slate-600">Las clases del mock son exactamente las de producción. Tokens en CSS vars listos para migrar.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center font-bold text-slate-700">🧩</div>
+          <div>
+            <div class="font-bold">shadcn/ui + Lucide icons</div>
+            <div class="text-sm text-slate-600">Componentes base instalables a demanda. Iconografía consistente y accesible.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center font-bold text-slate-700">📱</div>
+          <div>
+            <div class="font-bold">Vite PWA + Workbox</div>
+            <div class="text-sm text-slate-600">Service Worker para cachear vista del día. Las fotos se encolan y sincronizan al haber red.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center font-bold text-slate-700">🗺</div>
+          <div>
+            <div class="font-bold">react-konva</div>
+            <div class="text-sm text-slate-600">Para el plano interactivo. Polígonos como coordenadas relativas (% del ancho/alto del plano).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mb-2">Próximos pasos</div>
+      <h2 class="text-3xl font-extrabold tracking-tight">Cómo seguimos.</h2>
+
+      <ol class="mt-6 space-y-4">
+        <li class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-extrabold shrink-0">1</div>
+          <div>
+            <div class="font-bold">Elegir dirección visual</div>
+            <div class="text-sm text-slate-600">Revisa las 3 opciones y selecciona la que mejor representa la marca SanitIA. También se pueden mezclar elementos.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-extrabold shrink-0">2</div>
+          <div>
+            <div class="font-bold">Validar con 2 usuarios reales</div>
+            <div class="text-sm text-slate-600">1 operario + 1 admin-cliente · 15 minutos de tareas guiadas. Observar dónde dudan.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-extrabold shrink-0">3</div>
+          <div>
+            <div class="font-bold">Tokens y design system</div>
+            <div class="text-sm text-slate-600">Extraer colores, radios, sombras y tipografía a CSS vars + Tailwind config. Crear primitives en <span class="mono">/shared/components</span>.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-extrabold shrink-0">4</div>
+          <div>
+            <div class="font-bold">Componentes críticos primero</div>
+            <div class="text-sm text-slate-600">TaskCard, ChecklistStep, ContactTimer, ProductDoseCard, AreaPolygon. Tests con Vitest + RTL.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-extrabold shrink-0">5</div>
+          <div>
+            <div class="font-bold">Iterar con el MVP Fase 1</div>
+            <div class="text-sm text-slate-600">Conectar al backend Spring Boot, integrar Cognito, S3 presigned URLs para evidencia.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FOOTER ========= -->
+<footer class="bg-slate-900 text-white">
+  <div class="max-w-[1300px] mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-400">SanitIA · Plan de implementación v2</div>
+      <h3 class="text-2xl font-extrabold mt-1">Diseño de interfaces · 3 opciones</h3>
+      <p class="text-slate-400 text-sm mt-1">Mobile-first · WCAG AA · React 19 · Tailwind v4 · todas las opciones son light.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="opcion-1-light-clinico/index.html" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold">Opción 1 · Light Clínico</a>
+      <a href="opcion-2-verde-sanitario/index.html" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold">Opción 2 · Verde Sanitario</a>
+      <a href="opcion-3-pastel-moderno/index.html" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold">Opción 3 · Pastel Moderno</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
