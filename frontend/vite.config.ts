@@ -1,13 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
+// Tailwind v3 se integra via postcss.config.js — no como plugin de Vite
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
@@ -32,7 +31,6 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Cachear rutas del operario para soporte offline básico
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\/api\/v1\/tasks/,
@@ -41,7 +39,7 @@ export default defineConfig({
               cacheName: 'tasks-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 8, // 8 horas (un turno)
+                maxAgeSeconds: 60 * 60 * 8,
               },
             },
           },
