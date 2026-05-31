@@ -1,21 +1,47 @@
-# Configuración específica para desarrollo local
+# Configuración específica para desarrollo local.
 # Se activa automáticamente con SPRING_PROFILES_ACTIVE=dev
 
 spring:
   jpa:
-    show-sql: true  # Ver queries en consola durante desarrollo
+    show-sql: true
+    # Sin migraciones aún: create-drop crea el esquema al arrancar y lo borra
+    # al apagar. Cambiar a 'validate' cuando Flyway esté activo con V001__.sql
+    hibernate:
+      ddl-auto: create-drop
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri:  # Vacío en dev — seguridad abierta en SecurityConfig
+          issuer-uri:  # Vacío en dev — SecurityConfig permite todo sin JWT
+
+  flyway:
+    # Desactivado hasta que exista la primera migración V001__init_schema.sql
+    enabled: false
+
+  cloud:
+    aws:
+      # Región estática para que el SDK no busque en EC2 metadata ni instance profile
+      region:
+        static: us-east-1
+        auto: false
+      # Sin credenciales reales en local — no buscar en EC2, ECS ni ~/.aws/config
+      credentials:
+        instance-profile: false
+        container: false
+      # Desactivar los starters de AWS — no se conectan a nada en local
+      s3:
+        enabled: false
+      sqs:
+        enabled: false
+      ses:
+        enabled: false
 
 # Logs más verbosos en desarrollo
 logging:
   level:
     com.sanitia: DEBUG
     org.springframework.security: DEBUG
-    org.flywaydb: DEBUG
+    org.flywaydb: INFO
   pattern:
     console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %msg%n"
