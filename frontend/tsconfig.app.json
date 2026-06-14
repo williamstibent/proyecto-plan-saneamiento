@@ -6,6 +6,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
+    /* Vite — habilita ImportMeta.env, import de CSS/SVG/assets */
+    "types": ["vite/client"],
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -27,5 +30,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  /* Excluir tests del build de la app — tienen sus propios globals de Vitest */
+  "exclude": ["src/test"]
 }

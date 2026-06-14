@@ -53,13 +53,27 @@ La primera instalación descarga todas las dependencias (~2-3 min). Las siguient
 
 ## Ejecutar en desarrollo
 
+### Con mock backend (sin necesidad del backend real)
+
 ```bash
 npm run dev
 ```
 
-La app arranca en **http://localhost:5173**
+La app arranca en **http://localhost:5173** con el mock backend activado por defecto (configurado en `.env.local`). Los datos vienen de `src/mocks/data/dashboard.ts` — editables sin tocar el backend.
 
-El frontend hace proxy automático de `/api/*` al backend en `http://localhost:8080`. Para que funcionen las llamadas a la API, el backend debe estar corriendo también.
+En la consola del navegador verás `[MSW] Mock backend activo` confirmando que los interceptores están funcionando.
+
+### Con el backend real
+
+```bash
+# 1. Desactivar los mocks
+VITE_MOCK=false  # en .env.local
+
+# 2. Levantar el backend Spring Boot en localhost:8080, luego:
+npm run dev
+```
+
+El frontend hace proxy automático de `/api/*` a `http://localhost:8080`.
 
 ---
 
@@ -94,27 +108,38 @@ npm run preview
 
 ```
 src/
-├── main.tsx                         # Punto de entrada
-├── index.css                        # Tailwind CSS v4 + variables CSS
+├── main.tsx                         # Punto de entrada (arranca MSW si VITE_MOCK=true)
+├── index.css                        # Tailwind CSS + tokens Pastel Moderno (DM Sans)
 │
 ├── app/
 │   ├── providers/                   # QueryClient, providers globales
 │   ├── routes/                      # Definición de rutas (react-router-dom v7)
-│   └── layout/                      # Layout raíz (header, sidebar)
+│   └── layout/                      # Layout raíz
 │
 ├── features/                        # Un directorio por dominio de negocio
 │   ├── auth/                        # Login, sesión (Sprint 1)
+│   ├── dashboard/                   # Panel admin-cliente ✅ implementado
 │   ├── tasks/                       # Vista diaria del operario (Sprint 3)
 │   ├── procedures/                  # Constructor de POE (Sprint 2)
 │   ├── evidence/                    # Captura fotográfica (Sprint 4)
-│   ├── reports/                     # Dashboard y PDF (Sprint 4)
-│   └── dashboard/                   # Panel admin-cliente (Sprint 4)
+│   └── reports/                     # Reporte PDF (Sprint 4)
 │
 │   Cada feature sigue esta estructura interna:
-│   ├── components/    → Componentes React de ese dominio
-│   ├── hooks/         → Custom hooks (useQuery, useMutation, lógica)
-│   ├── api/           → Funciones de llamada al backend
-│   └── types.ts       → Tipos TypeScript del dominio
+│   ├── api/           → query keys, fetchers hacia el backend
+│   ├── hooks/         → useQuery / useMutation wrappereados
+│   ├── components/    → componentes React del dominio
+│   ├── pages/         → páginas ensambladas
+│   └── types.ts       → tipos TypeScript del dominio
+│
+├── mocks/                           # Mock backend (MSW) — solo activo en dev
+│   ├── types.ts                     # DTOs que devolverá el backend Spring Boot
+│   ├── browser.ts                   # Service Worker para el navegador
+│   ├── server.ts                    # Servidor Node para Vitest
+│   ├── data/
+│   │   └── dashboard.ts             # ← EDITAR AQUÍ los datos mock del dashboard
+│   └── handlers/
+│       ├── dashboard.ts             # Interceptores de /api/v1/dashboard/*, /programas/*, /task-instances/*
+│       └── index.ts                 # Agrega aquí los handlers de nuevos módulos
 │
 └── shared/
     ├── components/ui/ → Componentes UI reutilizables (shadcn/ui)
@@ -129,13 +154,16 @@ src/
 
 ## Variables de entorno
 
-```bash
-cp .env.example .env.local
-```
-
 Vite carga `.env.local` automáticamente. Las variables deben empezar con `VITE_` para estar disponibles en el código.
 
-En desarrollo local no es necesario configurar nada — el proxy a `localhost:8080` funciona sin variables adicionales.
+El archivo `.env.local` ya está incluido en el repositorio con la configuración de desarrollo:
+
+```bash
+# .env.local
+VITE_MOCK=true   # activar mock backend (MSW)
+```
+
+Para conectar al backend real, cambiar a `VITE_MOCK=false`. En producción la variable no se define y el worker nunca arranca.
 
 ---
 
@@ -156,7 +184,7 @@ En desarrollo local no es necesario configurar nada — el proxy a `localhost:80
 | Vite PWA | 0.21.x | Service Worker, soporte offline |
 | Vitest | 3.x | Tests unitarios |
 | Testing Library | 16.x | Tests de componentes React |
-| MSW | 2.x | Mock de API en tests |
+| MSW | 2.x | Mock backend en desarrollo y en tests |
 | Axios | 1.x | Cliente HTTP |
 
 ---

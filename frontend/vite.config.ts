@@ -5,6 +5,9 @@ import path from 'path'
 
 // Tailwind v3 se integra via postcss.config.js — no como plugin de Vite
 export default defineConfig({
+  // En GitHub Pages el sitio vive en /nombre-repo/.
+  // Localmente BASE_PATH no se define, por lo que queda en '/' (comportamiento por defecto).
+  base: process.env.BASE_PATH ?? '/',
   plugins: [
     react(),
     VitePWA({

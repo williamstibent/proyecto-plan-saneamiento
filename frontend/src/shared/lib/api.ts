@@ -15,11 +15,18 @@ export const apiClient = axios.create({
   timeout: 15000,
 })
 
-// Interceptor de request — adjunta el token JWT
+// Interceptor de request — adjunta el token JWT.
+// getAuthToken se inyecta desde fuera para evitar dependencia circular (api ↔ authStore).
+// Se inicializa en main.tsx justo después de crear el store.
+let getAuthToken: (() => string | null) = () => null
+
+export function setTokenGetter(fn: () => string | null) {
+  getAuthToken = fn
+}
+
 apiClient.interceptors.request.use((config) => {
-  // TODO Sprint 1: Obtener el token desde el store de Cognito/Zustand
-  // const token = useAuthStore.getState().token
-  // if (token) config.headers.Authorization = `Bearer ${token}`
+  const token = getAuthToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
 

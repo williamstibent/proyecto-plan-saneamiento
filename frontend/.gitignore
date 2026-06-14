@@ -5,6 +5,13 @@ node_modules/
 dist/
 dist-ssr/
 
+# TypeScript — caché de compilación incremental (generado por tsc -b)
+*.tsbuildinfo
+
+# Vite — caché interna
+.vite/
+vite.config.ts.timestamp-*
+
 # Variables de entorno locales — nunca en el repo
 .env.local
 .env.*.local
@@ -31,3 +38,4 @@ Thumbs.db
 
 # Tests
 coverage/
+.vitest/

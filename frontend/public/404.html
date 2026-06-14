@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      // GitHub Pages devuelve este 404.html para cualquier ruta desconocida.
+      // Redirigimos a index.html pasando el path como ?p= para que React Router lo restaure.
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.host +
+        l.pathname.split('/').slice(0, 2).join('/') +
+        '/?p=' + encodeURIComponent(l.pathname.slice(l.pathname.indexOf('/', 1)) + l.search) +
+        l.hash
+      );
+    </script>
+  </head>
+</html>

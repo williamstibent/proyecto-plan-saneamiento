@@ -1,18 +1,18 @@
 import { Outlet } from 'react-router-dom'
+import { DashboardSidebar } from '@/features/dashboard/components/DashboardSidebar'
 
 /**
- * Layout raíz de la aplicación.
- * En Fase 1 se agrega: sidebar de navegación, header con toggle admin/operario,
- * y el sistema de notificaciones (toast).
+ * Shell compartido de la aplicación.
+ * Todas las rutas protegidas renderizan aquí:
+ *   [Sidebar fijo] | [Outlet — ocupa el resto]
  */
 export function AppLayout() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* TODO Sprint 1: Agregar Header con toggle modo operario ↔ admin */}
-      {/* TODO Sprint 1: Agregar Sidebar de navegación */}
-      <main className="container mx-auto py-4">
+    <div className="flex h-screen overflow-hidden bg-white">
+      <DashboardSidebar />
+      <div className="flex flex-1 flex-col overflow-hidden">
         <Outlet />
-      </main>
+      </div>
     </div>
   )
 }

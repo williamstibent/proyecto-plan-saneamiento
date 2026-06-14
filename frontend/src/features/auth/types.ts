@@ -1,5 +1,19 @@
-/**
- * Tipos del feature: auth
- * Se completan en el sprint correspondiente según el plan de implementación.
- */
-export type {} // placeholder — eliminar al agregar los primeros tipos
+import type { UserRole } from '@/shared/types'
+
+export interface LoginRequest {
+  email: string
+  password: string
+}
+
+export interface AuthUser {
+  id: string
+  nombre: string
+  role: UserRole
+  tenantId: string
+  tenantNombre: string
+}
+
+export interface LoginResponse {
+  token: string
+  user: AuthUser
+}

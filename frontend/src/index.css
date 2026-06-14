@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* Pastel Moderno — design tokens */
+    --ink: #1b1530;
+    --muted-ink: #5e577a;
+    --line: #ece8f5;
+    --surface: #faf9fc;
+
+    /* shadcn/ui tokens (HSL) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -55,8 +64,24 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* Scrollbar sutil */
+.scrollbar-clean::-webkit-scrollbar { width: 6px; }
+.scrollbar-clean::-webkit-scrollbar-thumb { background: #d6cef0; border-radius: 3px; }
+
+/* Gradiente de fondo para tarjetas de colores */
+.gradient-card {
+  background: linear-gradient(135deg, #fdf4ff, #fff7ed);
+}
+
+/* Fondo de página con ruido suave */
+.noise-bg {
+  background-image: radial-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px);
+  background-size: 14px 14px;
 }

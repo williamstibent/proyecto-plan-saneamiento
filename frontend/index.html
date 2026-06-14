@@ -7,6 +7,18 @@
     <meta name="description" content="SanitIA — Plataforma de saneamiento sanitario" />
     <meta name="theme-color" content="#ffffff" />
     <title>SanitIA</title>
+    <script>
+      // Restaura la ruta SPA que redirigió 404.html via ?p=
+      (function () {
+        var p = window.location.search.match(/[?&]p=([^&]*)/);
+        if (p) {
+          window.history.replaceState(
+            null, null,
+            decodeURIComponent(p[1]) + window.location.hash
+          );
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

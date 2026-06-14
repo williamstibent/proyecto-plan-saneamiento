@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
+import { server } from '@/mocks/server'
 
-// Configuración global de MSW para interceptar requests en tests
-// import { server } from './mocks/server'
-// beforeAll(() => server.listen())
-// afterEach(() => server.resetHandlers())
-// afterAll(() => server.close())
+// Intercepta requests en todos los tests usando los handlers definidos en mocks/handlers/
+beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+afterEach(() => server.resetHandlers()) // limpia overrides por test
+afterAll(() => server.close())
