@@ -94,7 +94,7 @@ export function ProgramasMinimos() {
         </p>
       )}
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {isLoading
           ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
           : programas?.map((p, i) => <ProgramaCard key={p.id} programa={p} index={i} />)}

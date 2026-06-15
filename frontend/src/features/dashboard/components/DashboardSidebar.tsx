@@ -2,6 +2,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/shared/lib/utils'
 import { useAuthStore } from '@/shared/stores/authStore'
 
+interface DashboardSidebarProps {
+  onClose?: () => void
+}
+
 interface NavItem {
   emoji: string
   label: string
@@ -60,7 +64,7 @@ function NavLink({ item }: { item: NavItem }) {
   )
 }
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
   const user      = useAuthStore((s) => s.user)
   const clearAuth = useAuthStore((s) => s.clearAuth)
   const navigate  = useNavigate()
@@ -75,18 +79,29 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="flex w-56 shrink-0 flex-col border-r border-violet-100 bg-[#faf9fc] p-4">
-      {/* Logo + tenant */}
+    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-violet-100 bg-[#faf9fc] p-4 lg:w-56">
+      {/* Logo + tenant + botón cerrar (solo móvil) */}
       <div className="mb-6 flex items-center gap-2 px-2">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-violet-400 via-fuchsia-400 to-orange-300 font-extrabold text-white shadow-md shadow-violet-200">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-violet-400 via-fuchsia-400 to-orange-300 font-extrabold text-white shadow-md shadow-violet-200">
           S
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <div className="text-sm font-extrabold leading-none">SanitIA</div>
-          <div className="mt-0.5 text-[10px] text-violet-600">
+          <div className="mt-0.5 text-[10px] text-violet-600 truncate">
             {user?.tenantNombre ?? 'ArtesaPan'} · Centro
           </div>
         </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            aria-label="Cerrar menú"
+            className="grid h-7 w-7 shrink-0 place-items-center rounded-xl text-violet-400 hover:bg-violet-100 lg:hidden"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Nav operativo */}

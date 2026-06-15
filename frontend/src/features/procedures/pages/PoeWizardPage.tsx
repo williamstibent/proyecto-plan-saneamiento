@@ -101,6 +101,7 @@ export function PoeWizardPage() {
 
       {/* ── Layout ───────────────────────────────── */}
       <div className="mt-12 grid h-[calc(100vh-3rem)] w-full grid-cols-12">
+        {/* Stepper lateral — oculto en móvil */}
         <WizardStepper
           steps={stepsWithSublabels}
           currentStep={currentStep}
@@ -109,7 +110,8 @@ export function PoeWizardPage() {
           onStepClick={handleStepClick}
         />
 
-        <main className="scrollbar-clean col-span-6 overflow-auto px-8 py-8">
+        {/* Área de formulario — col-span-12 en móvil, 6 en desktop */}
+        <main className="scrollbar-clean col-span-12 overflow-auto px-4 py-6 lg:col-span-6 lg:px-8 lg:py-8">
           {currentStep === 0 && <Step1InfoBasica    data={data} onNext={goNext} />}
           {currentStep === 1 && <Step2EppImplementos data={data} onNext={goNext} onBack={goBack} />}
           {currentStep === 2 && <Step3ProductosDosis data={data} onNext={goNext} onBack={goBack} />}
@@ -125,6 +127,7 @@ export function PoeWizardPage() {
           )}
         </main>
 
+        {/* Preview del operario — oculto en móvil */}
         <WizardPreview data={data} />
       </div>
     </div>

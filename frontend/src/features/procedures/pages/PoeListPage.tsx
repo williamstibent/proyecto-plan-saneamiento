@@ -166,12 +166,12 @@ export function PoeListPage() {
       )}
 
       {/* ── Header ───────────────────────────────────── */}
-      <div className="flex items-end justify-between border-b border-violet-100 bg-white px-8 pb-5 pt-7">
+      <div className="flex flex-col gap-3 border-b border-violet-100 bg-white px-4 pb-4 pt-5 sm:flex-row sm:items-end sm:justify-between lg:px-8 lg:pb-5 lg:pt-7">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-widest text-violet-500">
             Plan de saneamiento
           </div>
-          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">
+          <h1 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">
             Procedimientos operativos estándar
           </h1>
           <p className="mt-1 text-sm text-[#5e577a]">
@@ -181,7 +181,7 @@ export function PoeListPage() {
 
         <Link
           to="/poe/nuevo"
-          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-violet-500 to-violet-700 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-violet-200 transition hover:from-violet-600 hover:to-violet-800"
+          className="inline-flex w-fit items-center gap-2 rounded-2xl bg-gradient-to-r from-violet-500 to-violet-700 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-violet-200 transition hover:from-violet-600 hover:to-violet-800"
         >
           + Nuevo POE
         </Link>
@@ -189,7 +189,7 @@ export function PoeListPage() {
 
       {/* ── Resumen ──────────────────────────────────── */}
       {!isLoading && (
-        <div className="flex gap-4 border-b border-violet-50 bg-[#faf9fc] px-8 py-3 text-[11px] text-[#5e577a]">
+        <div className="flex gap-4 border-b border-violet-50 bg-[#faf9fc] px-4 py-3 text-[11px] text-[#5e577a] lg:px-8">
           <span><b className="text-[#1b1530]">{total}</b> procedimientos</span>
           <span>·</span>
           <span><b className="text-emerald-600">{activos}</b> activos</span>
@@ -203,7 +203,7 @@ export function PoeListPage() {
       )}
 
       {/* ── Filtros ──────────────────────────────────── */}
-      <div className="flex gap-2 overflow-x-auto border-b border-violet-100 bg-white px-8 py-3">
+      <div className="flex gap-2 overflow-x-auto border-b border-violet-100 bg-white px-4 py-3 lg:px-8">
         {FILTROS.map((f) => (
           <button
             key={f.value}
@@ -221,13 +221,13 @@ export function PoeListPage() {
       </div>
 
       {/* ── Grid de cards ────────────────────────────── */}
-      <div className="flex-1 overflow-auto px-8 py-6">
+      <div className="flex-1 overflow-auto px-4 py-4 lg:px-8 lg:py-6">
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
           </div>
         ) : poes && poes.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {poes.map((poe) => <PoeCard key={poe.id} poe={poe} />)}
           </div>
         ) : (

@@ -11,7 +11,7 @@ export function WizardPreview({ data }: WizardPreviewProps) {
   const hasPasos    = data.pasos.length > 0
 
   return (
-    <aside className="scrollbar-clean col-span-4 overflow-auto border-l border-violet-100 bg-[#faf9fc] p-6">
+    <aside className="scrollbar-clean hidden lg:block col-span-4 overflow-auto border-l border-violet-100 bg-[#faf9fc] p-6">
       <div className="mb-3 flex items-center justify-between">
         <h4 className="flex items-center gap-2 text-sm font-extrabold">👁 Vista del operario</h4>
         <span className="rounded-full bg-violet-100 px-2.5 py-0.5 text-[10px] font-semibold text-violet-700">live</span>

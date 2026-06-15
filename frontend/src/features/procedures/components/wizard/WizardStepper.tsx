@@ -15,7 +15,7 @@ interface WizardStepperProps {
 
 export function WizardStepper({ steps, currentStep, poeCode, poeNombre, onStepClick }: WizardStepperProps) {
   return (
-    <aside className="col-span-2 flex flex-col border-r border-violet-100 bg-white p-5">
+    <aside className="hidden lg:flex col-span-2 flex-col border-r border-violet-100 bg-white p-5">
       <a
         href="/poe"
         className="mb-6 flex items-center gap-1 text-xs text-violet-700 hover:text-violet-900"

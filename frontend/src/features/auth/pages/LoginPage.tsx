@@ -15,7 +15,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 function DecorativePanel() {
   return (
-    <div className="relative col-span-7 overflow-hidden p-12" style={{ background: 'linear-gradient(135deg, #fdf4ff, #fff7ed)' }}>
+    <div className="relative hidden lg:block lg:col-span-7 overflow-hidden p-12" style={{ background: 'linear-gradient(135deg, #fdf4ff, #fff7ed)' }}>
       {/* Blobs de fondo */}
       <div className="absolute -right-10 -top-20 h-72 w-72 rounded-full bg-violet-200/50 blur-3xl" />
       <div className="absolute -bottom-10 -left-10 h-72 w-72 rounded-full bg-orange-200/50 blur-3xl" />
@@ -104,8 +104,19 @@ function LoginForm() {
   }
 
   return (
-    <div className="col-span-5 flex flex-col justify-center bg-white p-12">
+    <div className="col-span-12 flex flex-col justify-center bg-white px-6 py-10 lg:col-span-5 lg:p-12">
       <div className="mx-auto w-full max-w-sm">
+        {/* Logo compacto — solo visible en móvil (el panel decorativo está oculto) */}
+        <div className="mb-8 flex items-center gap-2 lg:hidden">
+          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-violet-400 via-fuchsia-400 to-orange-300 font-extrabold text-white shadow-lg shadow-violet-200">
+            S
+          </div>
+          <div>
+            <div className="font-extrabold text-violet-950">SanitIA</div>
+            <div className="text-xs text-violet-600">cumplimiento sanitario, hecho fácil</div>
+          </div>
+        </div>
+
         <h1 className="text-3xl font-extrabold leading-tight">
           Bienvenido<br />de vuelta.
         </h1>
@@ -221,5 +232,6 @@ export function LoginPage() {
         <LoginForm />
       </div>
     </div>
+
   )
 }

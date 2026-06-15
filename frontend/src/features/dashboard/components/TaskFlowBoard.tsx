@@ -82,7 +82,8 @@ export function TaskFlowBoard() {
         </p>
       )}
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="-mx-5 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0 sm:pb-0">
+      <div className="grid min-w-[580px] grid-cols-4 gap-3 sm:min-w-0">
         {COLUMNS.map((col) => {
           const columnTareas = tareasFor(col.estado)
           return (
@@ -101,6 +102,7 @@ export function TaskFlowBoard() {
             </div>
           )
         })}
+      </div>
       </div>
     </div>
   )
