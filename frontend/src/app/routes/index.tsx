@@ -1,40 +1,56 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { AppLayout } from '@/app/layout'
+import { AppLayout }      from '@/app/layout'
+import { OperarioLayout } from '@/app/layout/OperarioLayout'
 import { ProtectedRoute } from './ProtectedRoute'
-import { LoginPage } from '@/features/auth/pages/LoginPage'
-import { DashboardPage } from '@/features/dashboard/pages/DashboardPage'
-import { PoeListPage } from '@/features/procedures/pages/PoeListPage'
-import { PoeWizardPage } from '@/features/procedures/pages/PoeWizardPage'
+import { LoginPage }         from '@/features/auth/pages/LoginPage'
+import { DashboardPage }     from '@/features/dashboard/pages/DashboardPage'
+import { PoeListPage }       from '@/features/procedures/pages/PoeListPage'
+import { PoeWizardPage }     from '@/features/procedures/pages/PoeWizardPage'
+import { TareasHoyPage }     from '@/features/operario/pages/TareasHoyPage'
+import { ChecklistPage }     from '@/features/operario/pages/ChecklistPage'
+import { HistorialPage }     from '@/features/operario/pages/HistorialPage'
+import { PerfilPage }        from '@/features/operario/pages/PerfilPage'
 
 /**
- * Rutas de la aplicación.
+ * Árbol de rutas de la aplicación.
  *
- *   /login          → LoginPage (pública)            ✅ implementado
- *   /               → Redirect a /dashboard
- *   /dashboard      → DashboardPage (protegida)      ✅ implementado
- *   /validar        → ValidarPage (Sprint 2)
- *   /mapa           → MapaPage (Sprint 2)
- *   /programacion   → ProgramacionPage (Sprint 2)
- *   /tasks          → TaskListPage — vista operario (Sprint 3)
- *   /tasks/:taskId  → TaskExecutionPage (Sprint 3)
- *   /poe            → ProceduresPage (Sprint 2)
- *   /reports        → ReportsPage (Sprint 4)
+ *   /login                  → LoginPage (pública)
+ *   /                       → redirect a /dashboard
+ *
+ *   /dashboard              → DashboardPage          (admin/supervisor)
+ *   /poe                    → PoeListPage             (admin/supervisor)
+ *   /poe/nuevo              → PoeWizardPage           (admin/supervisor)
+ *
+ *   /operario               → redirect a /operario/hoy
+ *   /operario/hoy           → TareasHoyPage           (operario)
+ *   /operario/tareas/:id    → ChecklistPage           (operario)
+ *   /operario/historial     → HistorialPage           (operario)
+ *   /operario/perfil        → PerfilPage              (operario)
  */
 export function AppRouter() {
-  // import.meta.env.BASE_URL es seteado automáticamente por Vite
-  // según el campo `base` de vite.config.ts (/ en dev, /repo-name/ en GH Pages)
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
-        {/* Ruta pública */}
+        {/* ── Ruta pública ──────────────────────────────────────────── */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* POE Wizard — protegida, layout propio (fullscreen) */}
+        {/* ── POE Wizard — layout propio (fullscreen) ───────────────── */}
         <Route element={<ProtectedRoute />}>
           <Route path="poe/nuevo" element={<PoeWizardPage />} />
         </Route>
 
-        {/* Rutas protegidas con AppLayout */}
+        {/* ── Vista operario (OperarioLayout con bottom-nav) ────────── */}
+        <Route element={<OperarioLayout />}>
+          <Route element={<ProtectedRoute />}>
+            <Route path="operario" element={<Navigate to="/operario/hoy" replace />} />
+            <Route path="operario/hoy"         element={<TareasHoyPage />} />
+            <Route path="operario/tareas/:id"  element={<ChecklistPage />} />
+            <Route path="operario/historial"   element={<HistorialPage />} />
+            <Route path="operario/perfil"      element={<PerfilPage />} />
+          </Route>
+        </Route>
+
+        {/* ── Rutas admin/supervisor (AppLayout con sidebar) ────────── */}
         <Route element={<AppLayout />}>
           <Route element={<ProtectedRoute />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
@@ -43,9 +59,6 @@ export function AppRouter() {
 
             {/* TODO Sprint 2: <Route path="validar" element={<ValidarPage />} /> */}
             {/* TODO Sprint 2: <Route path="mapa" element={<MapaPage />} /> */}
-            {/* TODO Sprint 2: <Route path="programacion" element={<ProgramacionPage />} /> */}
-            {/* TODO Sprint 3: <Route path="tasks" element={<TaskListPage />} /> */}
-            {/* TODO Sprint 3: <Route path="tasks/:taskId" element={<TaskExecutionPage />} /> */}
             {/* TODO Sprint 4: <Route path="reports" element={<ReportsPage />} /> */}
           </Route>
         </Route>

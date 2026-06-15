@@ -91,16 +91,61 @@ function DecorativePanel() {
 
 // ─── Formulario derecho ───────────────────────────────────────────────────────
 
+// ─── Acceso rápido de pruebas (solo cuando VITE_MOCK=true) ───────────────────
+
+interface QuickUser { label: string; emoji: string; email: string }
+
+const QUICK_USERS: QuickUser[] = [
+  { label: 'Operario',   emoji: '🧹', email: 'operario@demo.co'   },
+  { label: 'Supervisor', emoji: '🔍', email: 'supervisor@demo.co' },
+  { label: 'Admin',      emoji: '⚙️',  email: 'admin@demo.co'      },
+]
+
+function QuickAccess({ onSelect }: { onSelect: (email: string) => void }) {
+  if (import.meta.env.VITE_MOCK !== 'true') return null
+
+  return (
+    <div className="rounded-2xl border border-violet-100 bg-[#faf9fc] p-4">
+      <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-violet-500">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-violet-500" />
+        Acceso rápido — modo pruebas
+      </div>
+      <div className="flex gap-2">
+        {QUICK_USERS.map((u) => (
+          <button
+            key={u.email}
+            type="button"
+            onClick={() => onSelect(u.email)}
+            className="flex flex-1 flex-col items-center gap-1 rounded-xl border border-violet-100 bg-white py-2.5 text-center text-[11px] font-semibold hover:border-violet-300 hover:bg-violet-50 transition"
+          >
+            <span className="text-lg">{u.emoji}</span>
+            {u.label}
+          </button>
+        ))}
+      </div>
+      <p className="mt-2 text-center text-[10px] text-violet-400">Contraseña: demo (cualquier valor)</p>
+    </div>
+  )
+}
+
+// ─── Formulario derecho ───────────────────────────────────────────────────────
+
 function LoginForm() {
   const { mutate: doLogin, isPending, error } = useLogin()
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { remember: true },
   })
 
   const onSubmit = (values: LoginFormValues) => {
     doLogin({ email: values.email, password: values.password })
+  }
+
+  const handleQuickAccess = (email: string) => {
+    setValue('email', email)
+    setValue('password', 'demo')
+    doLogin({ email, password: 'demo' })
   }
 
   return (
@@ -217,6 +262,11 @@ function LoginForm() {
             <a href="#" className="font-bold text-violet-700">Pide acceso →</a>
           </p>
         </form>
+
+        {/* Acceso rápido — solo visible en modo mock */}
+        <div className="mt-4">
+          <QuickAccess onSelect={handleQuickAccess} />
+        </div>
       </div>
     </div>
   )

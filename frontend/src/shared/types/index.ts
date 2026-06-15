@@ -26,6 +26,7 @@ export type UserRole =
   | 'ADMIN_PLATAFORMA'
   | 'CONSULTOR'
   | 'ADMIN_CLIENTE'
+  | 'SUPERVISOR'
   | 'OPERARIO'
 
 // Estado de una tarea
