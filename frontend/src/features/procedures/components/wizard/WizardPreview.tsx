@@ -124,9 +124,9 @@ export function WizardPreview({ data }: WizardPreviewProps) {
       {/* Tip contextual */}
       {data.productos.some((p) => p.tiempoContactoMin) && (
         <div className="mt-5 rounded-2xl border border-violet-100 bg-white p-4 text-[11px]">
-          <div className="mb-1 font-extrabold">💡 Temporizador automático</div>
+          <div className="mb-1 font-extrabold">💡 Tiempo de contacto</div>
           <div className="text-violet-900/80">
-            Los productos con tiempo de contacto generarán un <b>paso de espera con timer</b> durante la ejecución.
+            Los productos con tiempo de contacto mostrarán ese dato <b>como referencia</b> en el paso correspondiente durante la ejecución.
           </div>
         </div>
       )}

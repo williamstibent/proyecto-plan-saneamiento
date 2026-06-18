@@ -122,7 +122,7 @@ function ProductoBlock({
             onChange={(e) => set('tiempoContactoMin', e.target.value ? Number(e.target.value) : undefined)}
             className="mt-1 w-full rounded-xl border border-violet-100 px-3 py-2 text-sm outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100"
           />
-          <p className="mt-0.5 text-[10px] text-violet-500">Genera timer automático</p>
+          <p className="mt-0.5 text-[10px] text-violet-500">Se muestra como referencia en el paso</p>
         </div>
       </div>
 
@@ -197,7 +197,7 @@ export function Step3ProductosDosis({ data, onNext, onBack }: Props) {
         </button>
 
         <div className="rounded-2xl border border-sky-100 bg-sky-50 p-3 text-[11px] text-sky-900/80">
-          ⓘ Los productos con tiempo de contacto generarán un <b>timer automático</b> en la app del operario.
+          ⓘ Los productos con tiempo de contacto mostrarán ese dato <b>como referencia</b> en la app del operario.
           La dilución queda registrada en cada ejecución para auditoría INVIMA.
         </div>
       </div>

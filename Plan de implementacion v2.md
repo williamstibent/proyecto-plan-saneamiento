@@ -458,7 +458,7 @@ El wizard guía al consultor paso a paso. Orientado a **desktop** (tablet como m
 1. **Info básica**: código, nombre en lenguaje del operario, programa, objetivo, alcance, responsable.
 2. **EPP e implementos**: seleccionar de lista (monogafas, guantes, tapabocas, delantal, botas) + agregar implementos físicos (esponjas, cepillos, atomizador, baldes…).
 3. **Productos y dosificaciones**: para cada producto elegido del catálogo, definir superficie, dilución (ml/L), concentración (ppm), tiempo de contacto, método y si requiere enjuague. El consultor puede agregar productos que no están en el catálogo.
-4. **Pasos del procedimiento**: tres secciones colapsables (PREPARACIÓN / LIMPIEZA / DESINFECCIÓN). Drag-and-drop para reordenar. En pasos de desinfección, el consultor vincula el paso al producto/dosificación correspondiente → el sistema activa el temporizador cuando el operario marque ese paso.
+4. **Pasos del procedimiento**: tres secciones colapsables (PREPARACIÓN / LIMPIEZA / DESINFECCIÓN). Drag-and-drop para reordenar. En pasos de desinfección, el consultor vincula el paso al producto/dosificación correspondiente → el tiempo de contacto se muestra al operario como referencia informativa en ese paso (sin temporizador automático).
 5. **Frecuencia y dosis de choque**: configurar las reglas de frecuencia. Botón "Agregar dosis de choque" que añade una segunda regla con producto alternativo.
 6. **Preview y publicar**: vista completa del brief del operario, el checklist por fases y las dosificaciones. Si todo es correcto → publicar versión (inmutable desde ese momento).
 
@@ -638,7 +638,7 @@ Paso 1: Ver lista de tareas del día → ordenadas por urgencia
 Paso 2: Seleccionar tarea → ver brief antes de empezar
 Paso 3: Fase PREPARACIÓN → confirmar EPP y alistar soluciones
 Paso 4: Fase LIMPIEZA → checklist de pasos uno por uno
-Paso 5: Fase DESINFECCIÓN → checklist + temporizador de contacto
+Paso 5: Fase DESINFECCIÓN → checklist con tiempo de contacto como referencia
 Paso 6: Tomar foto si es requerida
 Paso 7: Confirmar y enviar → feedback visual inmediato
 ```
@@ -709,26 +709,12 @@ El checklist se organiza en fases que reflejan la estructura real del POE:
 [DESINFECCIÓN]                    0/5
   ○ Preparar solución desinfectante
   ○ Esparcir con atomizador
-  ○ ⏱ Dejar actuar (se inicia temporizador al marcar)
+  ○ ⏱ Dejar actuar 10 min (tiempo de contacto de referencia)
   ○ Enjuagar con agua potable
   ○ Escurrir y secar
 ```
 
-**Temporizador de tiempo de contacto**: al marcar el paso "Dejar actuar", se inicia automáticamente un temporizador con el tiempo exacto del `DosageRule.contactTimeMinutes`. El operario no puede avanzar al siguiente paso hasta que venza el tiempo (o confirmar explícitamente que ya pasó). Esto es crítico para cumplimiento real.
-
-```
-┌─────────────────────────────────────────────────────┐
-│  ⏱ Tiempo de contacto en curso                      │
-│                                                     │
-│           08:43                                     │
-│    de 10:00 minutos                                 │
-│                                                     │
-│  Amonio cuaternario sobre mesas de trabajo          │
-│                                                     │
-│  Puedes continuar con otras tareas mientras esperas │
-│  [Ya enjuagué (omitir timer) →]                     │
-└─────────────────────────────────────────────────────┘
-```
+**Tiempo de contacto como referencia**: el paso "Dejar actuar" muestra el tiempo exacto del `DosageRule.contactTimeMinutes` como dato informativo, pero no bloquea el avance ni dispara un temporizador automático. El operario marca el paso como completado cuando considera que cumplió el tiempo indicado; queda registrado únicamente que el paso fue completado (sin evento de inicio/fin de timer).
 
 #### Acceso a ficha completa del producto
 
@@ -968,7 +954,8 @@ RequiredImplement         → implemento físico (esponjas, cepillos, atomizador
 DosageRule                → producto + superficie + dilución + tiempo de contacto + método
                             isShockDose distingue protocolo normal de dosis de choque
 ChecklistTemplate         → plantilla de checklist vinculada a la versión
-ChecklistItem             → ítem con fase y referencia opcional a DosageRule (activa timer)
+ChecklistItem             → ítem con fase y referencia opcional a DosageRule
+                            (el tiempo de contacto se muestra como dato informativo, sin timer)
 
 ── SCHEDULING Y EJECUCIÓN ───────────────────────────────────────────────────
 ScheduleRule              → área + procedimiento + frecuencia; isShockDose para dosis de choque
@@ -977,7 +964,6 @@ ScheduleRule              → regla de frecuencia: área + procedimiento → cu�
 TaskInstance              → tarea generada: procedimiento + área + fecha + protocolo
                             (incluye si es ejecución normal o dosis de choque)
 TaskExecution             → ejecución concreta de un TaskInstance por un operario
-ContactTimerEvent         → registro de inicio/fin del temporizador de contacto en ejecución
 ExecutionChecklistItem    → ítem completado/omitido en una ejecución
 Evidence                  → foto con contexto completo (task_execution_id · area_id · captured_at)
 NonConformity             → no conformidad registrada durante ejecución
@@ -1608,7 +1594,7 @@ US-10: Como consultor sanitario, quiero registrar la dosificación específica p
 
 US-11: Como consultor sanitario, quiero construir el checklist por fases (PREPARACIÓN,
        LIMPIEZA, DESINFECCIÓN) y vincular pasos de desinfección al producto
-       correspondiente para que el sistema active el temporizador automáticamente
+       correspondiente para que el operario vea el tiempo de contacto exacto en ese paso
 
 US-12: Como consultor sanitario, quiero asignar múltiples reglas de frecuencia a un
        procedimiento (ej: DAILY para ejecución normal + WEEKLY para dosis de choque)
@@ -1637,8 +1623,8 @@ US-17: Como operario, quiero ver ANTES de iniciar la tarea:
        Sin tener que buscar el documento impreso ni preguntar al admin-cliente
 
 US-18: Como operario, quiero que el checklist me guíe por fases (PREPARACIÓN → LIMPIEZA → DESINFECCIÓN)
-       y que al marcar el paso de aplicar desinfectante, se inicie automáticamente un temporizador
-       con el tiempo de contacto exacto del producto
+       y que el paso de aplicar desinfectante muestre el tiempo de contacto exacto del producto
+       como referencia, sin depender de un temporizador automático
 
 US-19: Como operario, quiero poder tocar el nombre de un producto químico durante la tarea
        y ver su ficha rápida: dosificación, tiempo de contacto, precauciones y primeros auxilios
@@ -1689,7 +1675,6 @@ US-32: Como admin-cliente, quiero ver la tendencia de cumplimiento de los últim
 | **Evidencia sin contexto (inválida para INVIMA)** | Alto | Forzar `area_id`, `task_execution_id`, `user_id` y `captured_at` en toda `Evidence`. Validar en backend. |
 | **Operario abandona la app por UX compleja** | Alto | Test de usabilidad con operario real antes de lanzar Fase 1. El brief de tarea debe cargarse en < 1 segundo. |
 | **Checklist genérico que no refleja el POE real** | Alto | El flujo de onboarding guía al consultor a ingresar fases (PREPARACIÓN / LIMPIEZA / DESINFECCIÓN), EPP y dosificaciones antes de activar la operación. |
-| **Temporizador de contacto ignorado por el operario** | Medio | El timer es visible pero no bloquea — el operario puede omitirlo con confirmación explícita. Queda registrado en `ContactTimerEvent` para auditoría. |
 | **Dosificación incorrecta por confundir superficies** | Alto | El sistema muestra la dosificación específica para el área y superficie de la tarea, no la dosificación genérica del producto. Test que valida que `DosageRule.surfaceType` coincide con el área de la `TaskInstance`. |
 | **Generación duplicada de TaskInstance** | Medio | Restricción UNIQUE `(schedule_rule_id, scheduled_date)` en DB. Generación idempotente. |
 | **Pérdida de fotos por fallo de red** | Medio | Caché local (Service Worker + IndexedDB). Reintento automático al recuperar conexión. |
