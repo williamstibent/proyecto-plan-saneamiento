@@ -10,6 +10,9 @@ import { TareasHoyPage }     from '@/features/operario/pages/TareasHoyPage'
 import { ChecklistPage }     from '@/features/operario/pages/ChecklistPage'
 import { HistorialPage }     from '@/features/operario/pages/HistorialPage'
 import { PerfilPage }        from '@/features/operario/pages/PerfilPage'
+import { MapaPage }          from '@/features/floorplan/pages/MapaPage'
+import { ClientesListPage }      from '@/features/onboarding/pages/ClientesListPage'
+import { OnboardingClientePage } from '@/features/onboarding/pages/OnboardingClientePage'
 
 /**
  * Árbol de rutas de la aplicación.
@@ -20,6 +23,9 @@ import { PerfilPage }        from '@/features/operario/pages/PerfilPage'
  *   /dashboard              → DashboardPage          (admin/supervisor)
  *   /poe                    → PoeListPage             (admin/supervisor)
  *   /poe/nuevo              → PoeWizardPage           (admin/supervisor)
+ *   /mapa                   → MapaPage                (admin/supervisor)
+ *   /clientes               → ClientesListPage        (admin/supervisor)
+ *   /clientes/onboarding    → OnboardingClientePage   (admin/supervisor)
  *
  *   /operario               → redirect a /operario/hoy
  *   /operario/hoy           → TareasHoyPage           (operario)
@@ -37,6 +43,7 @@ export function AppRouter() {
         {/* ── POE Wizard — layout propio (fullscreen) ───────────────── */}
         <Route element={<ProtectedRoute />}>
           <Route path="poe/nuevo" element={<PoeWizardPage />} />
+          <Route path="clientes/onboarding" element={<OnboardingClientePage />} />
         </Route>
 
         {/* ── Vista operario (OperarioLayout con bottom-nav) ────────── */}
@@ -56,9 +63,10 @@ export function AppRouter() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="poe"       element={<PoeListPage />} />
+            <Route path="mapa"      element={<MapaPage />} />
+            <Route path="clientes"  element={<ClientesListPage />} />
 
             {/* TODO Sprint 2: <Route path="validar" element={<ValidarPage />} /> */}
-            {/* TODO Sprint 2: <Route path="mapa" element={<MapaPage />} /> */}
             {/* TODO Sprint 4: <Route path="reports" element={<ReportsPage />} /> */}
           </Route>
         </Route>

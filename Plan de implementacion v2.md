@@ -420,6 +420,33 @@ Templates de tenant (creados por el consultor para reusar)
 
 **Lo que el consultor nunca debe hacer dos veces**: ingresar los pasos de lavado de manos, los pasos básicos de limpieza de pisos, las concentraciones de hipoclorito. Eso ya está en la plataforma.
 
+#### Flujo implementado: onboarding de cliente y repositorio de POEs (frontend, prototipo sobre mocks)
+
+Ya existe en el frontend (`features/onboarding/`, contra MSW — pendiente de conectar al backend real) un wizard de 4 pasos que resuelve el caso concreto de **reusar un POE entre distintos clientes** sin volver a escribirlo desde cero:
+
+```
+Paso 1 — Cliente
+  └── Crear cliente nuevo o seleccionar uno existente (nombre, NIT, tipo de establecimiento)
+
+Paso 2 — Pisos y áreas
+  └── Definir los pisos del establecimiento y las áreas de cada piso
+
+Paso 3 — Buscar POE
+  ├── Modo "Todos los procedimientos" → búsqueda libre por código, nombre o descripción
+  ├── Modo "Por programa mínimo" → filtra por los 4 programas (agua, residuos, plagas, L&D)
+  └── Cada resultado muestra su origen:
+        Plantilla SanitIA · Plantilla de otro cliente · POE de cliente
+        (veces utilizado y, si aplica, de qué cliente vino originalmente)
+
+Paso 4 — Adaptar POE
+  └── Clona el POE seleccionado para el cliente actual — la plantilla original (o el
+      POE del otro cliente) nunca se modifica
+```
+
+**Adaptar POE — vista previa primero**: la pantalla de entrada al paso 4 no es un formulario, es el **resumen completo** del POE clonado (sus 5 secciones: información básica, EPP e implementos, productos y dosis, checklist, programación). Cada sección tiene un botón **"✎ Editar"** que navega al formulario específico de esa sección; al guardar esa sección, se vuelve al resumen — no se avanza secuencialmente a la siguiente. Así el consultor ve de inmediato qué trae el POE de origen y ajusta solo lo que difiere para ese cliente, en vez de recorrer 5 pantallas en orden fijo.
+
+Rutas: `/clientes` (lista de clientes con conteo de pisos, áreas y POEs asignados) y `/clientes/onboarding` (el wizard de 4 pasos).
+
 #### Wizard del constructor de POE (para procedimientos personalizados)
 
 El wizard guía al consultor paso a paso. Orientado a **desktop** (tablet como mínimo). En cada paso hay un panel de **preview en tiempo real** que muestra cómo verá el operario esa pantalla.
@@ -1579,6 +1606,9 @@ US-07: Como consultor sanitario, quiero explorar la biblioteca de templates de l
        plataforma filtrada por tipo de establecimiento y usar un template como
        punto de partida para un procedimiento, clonándolo y personalizando solo
        lo que difiere de mi cliente
+       [frontend implementado sobre mocks — Paso 3 "Buscar POE" del onboarding,
+        ver 4.2 "Flujo implementado". Falta backend real y filtro por tipo de
+        establecimiento (hoy solo filtra por programa mínimo o texto libre)]
 
 US-08: Como consultor sanitario, quiero construir un procedimiento desde cero con el
        wizard guiado (info básica → EPP → productos → pasos → frecuencia → preview)
@@ -1604,6 +1634,9 @@ US-13: Como consultor sanitario, quiero publicar la versión del procedimiento (
 
 US-14: Como consultor sanitario, quiero clonar un procedimiento que ya creé para un
        cliente y usarlo como base para otro cliente diferente, sin afectar el original
+       [frontend implementado sobre mocks — Paso 4 "Adaptar POE": vista previa con
+        resumen de las 5 secciones y botón "✎ Editar" por sección, que vuelve al
+        resumen al guardar. Falta backend real]
 
 US-15: Como consultor sanitario, quiero crear una nueva versión de un procedimiento
        existente (cuando hay cambio de producto o proceso) sin perder el historial

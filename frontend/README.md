@@ -117,12 +117,17 @@ src/
 │   └── layout/                      # Layout raíz
 │
 ├── features/                        # Un directorio por dominio de negocio
-│   ├── auth/                        # Login, sesión (Sprint 1)
+│   ├── auth/                        # Login, sesión ✅ implementado
 │   ├── dashboard/                   # Panel admin-cliente ✅ implementado
-│   ├── tasks/                       # Vista diaria del operario (Sprint 3)
-│   ├── procedures/                  # Constructor de POE (Sprint 2)
+│   ├── operario/                    # Vista diaria del operario y checklist ✅ implementado
+│   ├── procedures/                  # Constructor de POE (wizard 5 pasos) ✅ implementado
+│   ├── floorplan/                   # Plano del establecimiento (react-konva) + tareas por área ✅ implementado
+│   ├── onboarding/                  # Alta de cliente + repositorio de POEs reusables ✅ implementado
 │   ├── evidence/                    # Captura fotográfica (Sprint 4)
 │   └── reports/                     # Reporte PDF (Sprint 4)
+│
+│   "✅ implementado" = UI completa contra mock backend (MSW), sin backend Spring Boot
+│   real conectado todavía.
 │
 │   Cada feature sigue esta estructura interna:
 │   ├── api/           → query keys, fetchers hacia el backend
@@ -136,9 +141,15 @@ src/
 │   ├── browser.ts                   # Service Worker para el navegador
 │   ├── server.ts                    # Servidor Node para Vitest
 │   ├── data/
-│   │   └── dashboard.ts             # ← EDITAR AQUÍ los datos mock del dashboard
+│   │   ├── dashboard.ts             # ← EDITAR AQUÍ los datos mock del dashboard
+│   │   ├── clientes.ts              # Clientes (tenants) del onboarding
+│   │   ├── poe-repositorio.ts       # Repositorio de POEs: plantillas + POEs de clientes
+│   │   └── floorplan.ts             # Pisos, áreas, polígonos y tareas por área
 │   └── handlers/
 │       ├── dashboard.ts             # Interceptores de /api/v1/dashboard/*, /programas/*, /task-instances/*
+│       ├── clientes.ts              # Interceptores de /api/v1/clientes/*
+│       ├── poe-repositorio.ts       # Interceptores de /api/v1/poe-repositorio/*
+│       ├── floorplan.ts             # Interceptores de /api/v1/floorplan/*
 │       └── index.ts                 # Agrega aquí los handlers de nuevos módulos
 │
 └── shared/

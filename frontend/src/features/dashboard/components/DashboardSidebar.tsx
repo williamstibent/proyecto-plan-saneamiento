@@ -23,6 +23,7 @@ const NAV_OPERATIVO: NavItem[] = [
 
 const NAV_CONFIGURAR: NavItem[] = [
   { emoji: '📑', label: 'POE',              href: '/poe' },
+  { emoji: '🏢', label: 'Clientes',         href: '/clientes' },
   { emoji: '🧪', label: 'Productos',        href: '/productos' },
   { emoji: '👥', label: 'Usuarios',         href: '/usuarios' },
   { emoji: '📚', label: 'Capacitaciones',   href: '/capacitaciones' },
@@ -75,7 +76,7 @@ export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
 
   const handleLogout = () => {
     clearAuth()
-    navigate('/login', { replace: true })
+    void navigate('/login', { replace: true })
   }
 
   return (
