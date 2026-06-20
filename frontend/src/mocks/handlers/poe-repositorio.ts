@@ -32,7 +32,10 @@ export const poeRepositorioHandlers = [
       )
     }
 
-    return HttpResponse.json({ data: resultado, total: resultado.length })
+    return HttpResponse.json({
+      data: resultado,
+      pagination: { page: 0, size: resultado.length, totalElements: resultado.length, totalPages: 1 },
+    })
   }),
 
   // GET /api/v1/poe-repositorio/:id — contenido completo para clonar y adaptar
@@ -48,9 +51,9 @@ export const poeRepositorioHandlers = [
     return HttpResponse.json(MOCK_POE_DETALLE[id])
   }),
 
-  // POST /api/v1/clientes/:clienteId/poe — guarda la copia adaptada para el cliente
+  // POST /api/v1/clientes/:clienteId/poes — guarda la copia adaptada para el cliente
   // (no modifica el POE original del repositorio — solo incrementa su contador de uso)
-  http.post('/api/v1/clientes/:clienteId/poe', async ({ params, request }) => {
+  http.post('/api/v1/clientes/:clienteId/poes', async ({ params, request }) => {
     await delay(800)
     const clienteId = params.clienteId as string
     const body      = await request.json() as AdaptarPoeBody

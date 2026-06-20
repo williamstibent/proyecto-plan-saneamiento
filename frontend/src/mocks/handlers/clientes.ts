@@ -21,7 +21,10 @@ export const clientesHandlers = [
   // GET /api/v1/clientes — lista de clientes existentes
   http.get('/api/v1/clientes', async () => {
     await delay(350)
-    return HttpResponse.json({ data: MOCK_CLIENTES, total: MOCK_CLIENTES.length })
+    return HttpResponse.json({
+      data: MOCK_CLIENTES,
+      pagination: { page: 0, size: MOCK_CLIENTES.length, totalElements: MOCK_CLIENTES.length, totalPages: 1 },
+    })
   }),
 
   // POST /api/v1/clientes — crear un nuevo cliente

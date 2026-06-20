@@ -58,14 +58,14 @@ export const operarioHandlers = [
     const todosCompletos = tarea.pasos.every((p) => p.estado === 'completado')
     if (tarea.estado === 'PENDING') tarea.estado = 'IN_PROGRESS'
     if (todosCompletos && tarea.estado !== 'COMPLETED') {
-      // La tarea se completa solo con la llamada POST /completar
+      // La tarea se completa solo con el PATCH a /operario/tareas/:id
     }
 
     return HttpResponse.json(paso)
   }),
 
-  // POST /api/v1/operario/tareas/:id/completar — marcar tarea como terminada
-  http.post('/api/v1/operario/tareas/:id/completar', async ({ request, params }) => {
+  // PATCH /api/v1/operario/tareas/:id — marcar tarea como terminada (transición de estado)
+  http.patch('/api/v1/operario/tareas/:id', async ({ request, params }) => {
     await delay(500)
 
     const tarea = MOCK_TAREAS_HOY.find((t) => t.id === params.id)

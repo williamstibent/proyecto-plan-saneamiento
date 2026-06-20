@@ -32,13 +32,13 @@ export async function completarPaso(
   return res.data
 }
 
-/** Finalizar la tarea completa */
+/** Finalizar la tarea completa (transición de estado del recurso, sin verbo en el path) */
 export async function completarTarea(
   tareaId: string,
   body: CompletarTareaRequest,
 ): Promise<TareaOperario> {
-  const res = await apiClient.post<TareaOperario>(
-    `/operario/tareas/${tareaId}/completar`,
+  const res = await apiClient.patch<TareaOperario>(
+    `/operario/tareas/${tareaId}`,
     body,
   )
   return res.data

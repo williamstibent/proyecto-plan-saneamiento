@@ -1,18 +1,14 @@
 import { apiClient } from '@/shared/lib/api'
 import type { ProgramaMinimo, PoeWizardData } from '@/features/procedures/types'
 import type { PoeRepositorioItem } from '@/mocks/data/poe-repositorio'
-
-interface RepositorioResponse {
-  data: PoeRepositorioItem[]
-  total: number
-}
+import type { PaginatedResponse } from '@/shared/types'
 
 export async function buscarPoeRepositorio(q?: string, programa?: ProgramaMinimo): Promise<PoeRepositorioItem[]> {
   const params: Record<string, string> = {}
   if (q) params.q = q
   if (programa) params.programa = programa
 
-  const res = await apiClient.get<RepositorioResponse>('/poe-repositorio', { params })
+  const res = await apiClient.get<PaginatedResponse<PoeRepositorioItem>>('/poe-repositorio', { params })
   return res.data.data
 }
 
@@ -37,6 +33,6 @@ export interface AdaptarPoeResponse {
 }
 
 export async function adaptarPoeParaCliente({ clienteId, origenPoeId, data }: AdaptarPoeRequest): Promise<AdaptarPoeResponse> {
-  const res = await apiClient.post<AdaptarPoeResponse>(`/clientes/${clienteId}/poe`, { origenPoeId, data })
+  const res = await apiClient.post<AdaptarPoeResponse>(`/clientes/${clienteId}/poes`, { origenPoeId, data })
   return res.data
 }

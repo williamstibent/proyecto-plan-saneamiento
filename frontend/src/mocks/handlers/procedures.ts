@@ -18,7 +18,10 @@ export const proceduresHandlers = [
       ? MOCK_PROCEDIMIENTOS.filter((p) => p.programa === programa)
       : MOCK_PROCEDIMIENTOS
 
-    return HttpResponse.json({ data: resultado, total: resultado.length })
+    return HttpResponse.json({
+      data: resultado,
+      pagination: { page: 0, size: resultado.length, totalElements: resultado.length, totalPages: 1 },
+    })
   }),
 
   // POST /api/v1/procedimientos — crear nuevo POE (desde wizard)

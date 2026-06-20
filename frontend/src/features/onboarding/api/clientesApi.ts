@@ -1,13 +1,9 @@
 import { apiClient } from '@/shared/lib/api'
 import type { Cliente, PisoCliente, TipoEstablecimiento } from '../types'
-
-interface ClientesResponse {
-  data: Cliente[]
-  total: number
-}
+import type { PaginatedResponse } from '@/shared/types'
 
 export async function getClientes(): Promise<Cliente[]> {
-  const res = await apiClient.get<ClientesResponse>('/clientes')
+  const res = await apiClient.get<PaginatedResponse<Cliente>>('/clientes')
   return res.data.data
 }
 
